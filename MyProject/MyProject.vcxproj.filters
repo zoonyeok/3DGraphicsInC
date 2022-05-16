@@ -50,5 +50,8 @@
     <ClInclude Include="array.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

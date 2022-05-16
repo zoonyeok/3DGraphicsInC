@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="array.h" />
+    <ClInclude Include="color.h" />
     <ClInclude Include="display.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="triangle.h" />
