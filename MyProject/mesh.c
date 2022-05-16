@@ -1,7 +1,8 @@
 // TODO : mesh.h함수 구현
 #include "mesh.h"
 
-vec3_t g_mesh_vertices[N_MESH_VERTICES] = {
+vec3_t g_mesh_vertices[N_MESH_VERTICES] = 
+{
     {.x = -1, .y = -1, .z = -1 }, // 1
     {.x = -1, .y = 1, .z = -1 }, // 2
     {.x = 1, .y = 1, .z = -1 }, // 3
@@ -12,7 +13,8 @@ vec3_t g_mesh_vertices[N_MESH_VERTICES] = {
     {.x = -1, .y = -1, .z = 1 }  // 8
 };
 
-face_t g_mesh_faces[N_MESH_FACES] = {
+face_t g_mesh_faces[N_MESH_FACES] = 
+{
     // front
     {.a = 1, .b = 2, .c = 3 },
     {.a = 1, .b = 3, .c = 4 },

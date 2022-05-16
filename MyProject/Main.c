@@ -12,7 +12,8 @@ float fov_factor = 640;
 bool is_running = false;
 uint32_t previous_frame_time = 0;
 
-void setup(void) {
+void setup(void) 
+{
 	// Allocate the required memory in bytes to hold the color buffer
 	color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
 
@@ -117,6 +118,8 @@ void render(void)
 {
 	draw_grid();
 
+	// draw_line(100, 200, 300, 50, 0xFF00FF00);
+
 	// loop all projected triangles and render them
 	for (int i = 0; i < N_MESH_FACES; i++)
 	{
@@ -124,6 +127,8 @@ void render(void)
 		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00);
 		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00);
 		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00);
+
+		draw_triangle(triangle, 0xFF00FF00);
 	}
 
 	render_color_buffer();

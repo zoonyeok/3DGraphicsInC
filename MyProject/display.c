@@ -7,8 +7,10 @@ SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
 
-bool initialize_window(void) {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+bool initialize_window(void) 
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) 
+	{
 		fprintf(stderr, "Error initializing SDL.\n");
 		return false;
 	}
@@ -28,14 +30,16 @@ bool initialize_window(void) {
 		window_height,
 		SDL_WINDOW_BORDERLESS
 	);
-	if (!window) {
+	if (!window) 
+	{
 		fprintf(stderr, "Error creating SDL window.\n");
 		return false;
 	}
 
 	// Create a SDL renderer
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	if (!renderer) {
+	if (!renderer) 
+	{
 		fprintf(stderr, "Error creating SDL renderer.\n");
 		return false;
 	}
@@ -43,9 +47,12 @@ bool initialize_window(void) {
 	return true;
 }
 
-void draw_grid(void) {
-	for (int y = 0; y < window_height; y += 10) {
-		for (int x = 0; x < window_width; x += 10) {
+void draw_grid(void) 
+{
+	for (int y = 0; y < window_height; y += 10) 
+	{
+		for (int x = 0; x < window_width; x += 10) 
+		{
 			color_buffer[(window_width * y) + x] = 0xFF444444;
 		}
 	}
@@ -78,7 +85,40 @@ void draw_rect(int x, int y, int width, int height, uint32_t color)
 	}
 }
 
-void render_color_buffer(void) {
+void draw_triangle(triangle_t triangle, uint32_t color)
+{
+	for (int i = 0; i < 2; i++)
+	{
+		draw_line(triangle.points[i].x, triangle.points[i].y,
+			triangle.points[i + 1].x, triangle.points[i + 1].y, color);
+	}
+	draw_line(triangle.points[0].x, triangle.points[0].y,
+		triangle.points[2].x, triangle.points[2].y, color);
+}
+
+void draw_line(int x0, int y0, int x1, int y1, uint32_t color)
+{
+	int delta_x = (x1 - x0);
+	int delta_y = (y1 - y0);
+
+	int side_length = abs(delta_x) >= abs(delta_y) ? abs(delta_x) : abs(delta_y);
+
+	float x_inc = delta_x / (float)side_length;
+	float y_inc = delta_y / (float)side_length;
+
+	float current_x = x0;
+	float current_y = y0;
+
+	for (int i = 0; i <= side_length; i++)
+	{
+		draw_pixel(round(current_x), round(current_y), color);
+		current_x += x_inc;
+		current_y += y_inc;
+	}
+}
+
+void render_color_buffer(void) 
+{
 	SDL_UpdateTexture(
 		color_buffer_texture,
 		NULL,
@@ -88,15 +128,19 @@ void render_color_buffer(void) {
 	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
-void clear_color_buffer(uint32_t color) {
-	for (int y = 0; y < window_height; y++) {
-		for (int x = 0; x < window_width; x++) {
+void clear_color_buffer(uint32_t color) 
+{
+	for (int y = 0; y < window_height; y++) 
+	{
+		for (int x = 0; x < window_width; x++) 
+		{
 			color_buffer[(window_width * y) + x] = color;
 		}
 	}
 }
 
-void destroy_window(void) {
+void destroy_window(void) 
+{
 	free(color_buffer);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
