@@ -1,8 +1,9 @@
 #include "display.h"
 #include "vector.h"
 #include "mesh.h"
+#include "array.h"
 
-triangle_t triangles_to_render[N_MESH_FACES];
+triangle_t* triangles_to_render = NULL;
 
 vec3_t camera_position = { 0.0f, 0.0f, -5.0f };
 vec3_t cube_rotation = { 0.0f, 0.0f, 0.0f};
@@ -25,8 +26,6 @@ void setup(void)
 		window_width,
 		window_height
 	);
-
-	int point_count = 0;
 }
 
 void process_input(void) 
@@ -76,6 +75,9 @@ void update(void)
 	cube_rotation.y += 0.01f;
 	cube_rotation.z += 0.01f;
 
+	// 배열 초기화
+	triangles_to_render = NULL;
+
 	// 모든 triangle face 순회
 	for (int i = 0; i < N_MESH_FACES; i++) {
 		face_t mesh_face = g_mesh_faces[i];
@@ -110,30 +112,34 @@ void update(void)
 		}
 
 		// save the projected triangle in the array of triangles to render
-		triangles_to_render[i] = projected_triangle;
+		// triangles_to_render[i] = projected_triangle;
+		array_push(triangles_to_render, projected_triangle);
 	}
 }
 
 void render(void) 
 {
 	draw_grid();
-
 	// draw_line(100, 200, 300, 50, 0xFF00FF00);
 
 	// loop all projected triangles and render them
-	for (int i = 0; i < N_MESH_FACES; i++)
+	int triangle_array_length = array_length(triangles_to_render);
+
+	for (int i = 0; i < triangle_array_length; i++)
 	{
 		triangle_t triangle = triangles_to_render[i];
-		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00);
-		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00);
-		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00);
+		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xFFFFFF00); // vertex A
+		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xFFFFFF00); // vertex B
+		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, 0xFFFFFF00); // vertex C
 
 		draw_triangle(triangle, 0xFF00FF00);
 	}
 
+	// Clear the array of triangles to render every frame loop
+	array_free(triangles_to_render);
+
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
-
 	SDL_RenderPresent(renderer);
 }
 
