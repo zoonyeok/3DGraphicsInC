@@ -1,0 +1,35 @@
+﻿  display.c
+  Main.c
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(102,38): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(103,39): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(121,31): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(121,53): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(131,1): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
+  mesh.c
+  triangle.c
+  vector.c
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(9,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(10,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(19,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(21,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(30,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\vector.c(31,25): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+display.obj : error LNK2019: SDL_GetCurrentDisplayModeinitialize_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_CreateWindowinitialize_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_DestroyWindowdestroy_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_CreateRendererinitialize_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_UpdateTexturerender_color_buffer 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_RenderCopyrender_color_buffer 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_DestroyRendererdestroy_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_Initinitialize_window 함수에서 참조되는 확인할 수 없는 외부 기호
+display.obj : error LNK2019: SDL_Quitdestroy_window 함수에서 참조되는 확인할 수 없는 외부 기호
+Main.obj : error LNK2019: SDL_PollEventprocess_input 함수에서 참조되는 확인할 수 없는 외부 기호
+Main.obj : error LNK2019: SDL_CreateTexturesetup 함수에서 참조되는 확인할 수 없는 외부 기호
+Main.obj : error LNK2019: SDL_RenderPresentrender 함수에서 참조되는 확인할 수 없는 외부 기호
+Main.obj : error LNK2019: SDL_GetTicksupdate 함수에서 참조되는 확인할 수 없는 외부 기호
+Main.obj : error LNK2019: SDL_Delayupdate 함수에서 참조되는 확인할 수 없는 외부 기호
+MSVCRTD.lib(exe_main.obj) : error LNK2019: main"int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+C:\Users\junhy\Desktop\GraphicsInC\SDL2\lib\x86\SDL2.lib : warning LNK4272: 'x86' 라이브러리 컴퓨터 종류가 'x64' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL2\lib\x86\SDL2main.lib : warning LNK4272: 'x86' 라이브러리 컴퓨터 종류가 'x64' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\x64\Debug\MyProject.exe : fatal error LNK1120: 15개의 확인할 수 없는 외부 참조입니다.
