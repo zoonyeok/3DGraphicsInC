@@ -28,7 +28,7 @@ void setup(void)
 	);
 
 	//load_cube_mesh_data();
-	load_obj_file_data("cube.obj"); // ./assets/cube.obj
+	load_obj_file_data("f22.obj"); // ./assets/cube.obj
 }
 
 void process_input(void) 
@@ -65,13 +65,19 @@ bool backface_culling(vec3_t transformed_vertices[])
 	vec3_t vector_b = transformed_vertices[1];	/*  / \  */
 	vec3_t vector_c = transformed_vertices[2];	/* C---B */
 
+	// Get the vector 
 	vec3_t vector_ab = vec3_sub(vector_b, vector_a);
 	vec3_t vector_ac = vec3_sub(vector_c, vector_a);
+	vec3_normalize(&vector_ab);
+	vec3_normalize(&vector_ac);
 
+	// Compute the face normal (using cross product to find perpendicular)
 	vec3_t normal = vec3_cross(vector_ab, vector_ac);
-	vec3_t vector_a_camera = vec3_sub(vector_a, camera_position);
+	vec3_normalize(&normal);
 
-	if (vec3_dot(normal, vector_a_camera) > 0)
+	vec3_t camera_ray = vec3_sub(vector_a, camera_position);
+
+	if (vec3_dot(normal, camera_ray) < 0)
 	{
 		return false;
 	}
@@ -133,18 +139,7 @@ void update(void)
 		}
 
 		// TODO: Check backface culling
-		vec3_t vector_a = transformed_vertices[0];	/*   A   */
-		vec3_t vector_b = transformed_vertices[1];	/*  / \  */
-		vec3_t vector_c = transformed_vertices[2];	/* C---B */
-
-		vec3_t vector_ab = vec3_sub(vector_b, vector_a);
-		vec3_t vector_ac = vec3_sub(vector_c, vector_a);
-		vec3_t normal = vec3_cross(vector_ab, vector_ac);
-		vec3_t camera_ray = vec3_sub(camera_position, vector_a);
-
-		float dot_normal_camera = vec3_dot(normal, camera_ray);
-
-		if (dot_normal_camera < 0)
+		if (backface_culling(transformed_vertices))
 			continue;
 
 		// Loop all three vertices tor perform projection
