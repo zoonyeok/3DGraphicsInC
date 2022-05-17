@@ -27,7 +27,8 @@ void setup(void)
 		window_height
 	);
 
-	load_cube_mesh_data();
+	//load_cube_mesh_data();
+	load_obj_file_data("f22.obj"); // ./assets/cube.obj
 }
 
 void process_input(void) 
@@ -73,22 +74,22 @@ void update(void)
 
 	previous_frame_time = SDL_GetTicks();
 
-	g_mesh.rotation.x += 0.01f;
-	g_mesh.rotation.y += 0.01f;
-	g_mesh.rotation.z += 0.01f;
+	g_mesh2.rotation.x += 0.01f;
+	g_mesh2.rotation.y += 0.01f;
+	g_mesh2.rotation.z += 0.01f;
 
 	// 배열 초기화
 	triangles_to_render = NULL;
 
-	int num_faces = array_length(g_mesh.faces);
+	int num_faces = array_length(g_mesh2.faces);
 	// 모든 triangle face 순회
 	for (int i = 0; i < num_faces; i++) {
-		face_t mesh_face = g_mesh.faces[i];
+		face_t mesh_face = g_mesh2.faces[i];
 		
 		vec3_t face_vertices[3];
-		face_vertices[0] = g_mesh.vertices[mesh_face.a - 1];
-		face_vertices[1] = g_mesh.vertices[mesh_face.b - 1];
-		face_vertices[2] = g_mesh.vertices[mesh_face.c - 1];
+		face_vertices[0] = g_mesh2.vertices[mesh_face.a - 1];
+		face_vertices[1] = g_mesh2.vertices[mesh_face.b - 1];
+		face_vertices[2] = g_mesh2.vertices[mesh_face.c - 1];
 
 		triangle_t projected_triangle;
 
@@ -97,9 +98,9 @@ void update(void)
 		{
 			vec3_t transformed_vertex = face_vertices[j];
 
-			transformed_vertex = vec3_rotate_x(transformed_vertex, g_mesh.rotation.x);
-			transformed_vertex = vec3_rotate_y(transformed_vertex, g_mesh.rotation.y);
-			transformed_vertex = vec3_rotate_z(transformed_vertex, g_mesh.rotation.z);
+			transformed_vertex = vec3_rotate_x(transformed_vertex, g_mesh2.rotation.x);
+			transformed_vertex = vec3_rotate_y(transformed_vertex, g_mesh2.rotation.y);
+			transformed_vertex = vec3_rotate_z(transformed_vertex, g_mesh2.rotation.z);
 
 			// Translate the vertex away from the camera
 			transformed_vertex.z -= camera_position.z;
@@ -149,8 +150,8 @@ void render(void)
 // Free the memory that was dynamically allocated by the program
 void free_resources(void)
 {
-	array_free(g_mesh.faces);
-	array_free(g_mesh.vertices);
+	array_free(g_mesh2.faces);
+	array_free(g_mesh2.vertices);
 	// free(color_buffer);
 }
 
