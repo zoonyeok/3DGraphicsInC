@@ -28,7 +28,7 @@ void setup(void)
 	);
 
 	//load_cube_mesh_data();
-	load_obj_file_data("f22.obj"); // ./assets/cube.obj
+	load_obj_file_data2("ezreal.obj"); // ./assets/cube.obj
 }
 
 void process_input(void) 
@@ -132,9 +132,9 @@ void render(void)
 	for (int i = 0; i < triangle_array_length; i++)
 	{
 		triangle_t triangle = triangles_to_render[i];
-		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, Yellow); // vertex A
-		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, Yellow); // vertex B
-		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, Yellow); // vertex C
+		//draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, Yellow); // vertex A
+		//draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, Yellow); // vertex B
+		//draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, Yellow); // vertex C
 
 		draw_triangle(triangle, Green);
 	}

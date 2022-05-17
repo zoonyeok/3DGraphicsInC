@@ -27,5 +27,6 @@ extern mesh_t g_mesh2;
 
 void load_cube_mesh_data(void);
 void load_obj_file_data(char* filename);
+void load_obj_file_data2(char* filename);
 
 #endif // !MESH_H

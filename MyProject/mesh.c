@@ -1,6 +1,7 @@
 // TODO : mesh.h함수 구현
 #include "mesh.h"
 #include "array.h"
+#include "string.h"
 
 mesh_t g_mesh =
 {
@@ -82,6 +83,7 @@ void load_obj_file_data(char* filename)
 
     while (fgets(buffer, sizeof(buffer), fr) != NULL)
     {
+        char* context = NULL;
         char first = buffer[0];
         char second = buffer[1];
         vec3_t v = { 0, 0, 0 };
@@ -89,13 +91,13 @@ void load_obj_file_data(char* filename)
         {
             float arr[3] = {0.f, 0.f, 0.f};
             int cnt = 0;
-            char* ptr = strtok(buffer, " v");
+            char* ptr = strtok_s(buffer, " v", &context);
             while (ptr != NULL)
             {
                 arr[cnt++] = (float)atof(ptr);
 
-                printf(ptr);
-                ptr = strtok(NULL, " v");
+                //printf(ptr);
+                ptr = strtok_s(NULL, " v", &context);
             }
 
             v.x = arr[0]; 
@@ -109,12 +111,12 @@ void load_obj_file_data(char* filename)
         {
             int arr[3] = {0,0,0};
             int cnt = 0;
-            char* ptr = strtok(buffer, " f");
+            char* ptr = strtok_s(buffer, " f", &context);
             while (ptr != NULL)
             {
-                arr[cnt++] = (int)atof(ptr);
-                printf(ptr);
-                ptr = strtok(NULL, " f");
+                arr[cnt++] = atoi(ptr);
+                //printf(ptr);
+                ptr = strtok_s(NULL, " f", &context);
             }
 
             f.a = arr[0]; 
@@ -127,4 +129,48 @@ void load_obj_file_data(char* filename)
 
     fclose(fr);
     printf("FILE %s has %lu character\n", filename, count);
+}
+
+void load_obj_file_data2(char* filename)
+{
+    FILE* file = NULL;
+    fopen_s(&file, filename, "r");
+    if (file == NULL)
+    {
+        printf("Can't open %s\n", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    char line[1024];
+    while (fgets(line, sizeof(line), file))
+    {
+        // Vertex information
+        if (strncmp(line, "v ", 2) == 0)
+        {
+            vec3_t vertex;
+            sscanf_s(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
+            array_push(g_mesh2.vertices, vertex);
+        }
+
+        // Face Information
+        if (strncmp(line, "f ", 2) == 0)
+        {
+            int vertex_indices[3];
+            int texture_indices[3];
+            int normal_indices[3];
+            sscanf_s(
+                line, "f %d/%d/%d %d/%d/%d %d/%d/%d", 
+                &vertex_indices[0], &texture_indices[0], &normal_indices[0],
+                &vertex_indices[1], &texture_indices[1], &normal_indices[1],
+                &vertex_indices[2], &texture_indices[2], &normal_indices[2]
+            );
+            face_t face =
+            {
+                .a = vertex_indices[0],
+                .b = vertex_indices[1],
+                .c = vertex_indices[2]
+            };
+            array_push(g_mesh2.faces, face);
+        }
+    }
 }
