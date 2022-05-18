@@ -104,6 +104,46 @@ bool backface_culling(vec3_t transformed_vertices[])
 	return false;
 }
 
+float calculate_avg_depth(vec3_t transformed_vertices[])
+{
+	float avg_depth = 0.f;
+	for (int i = 0; i < 3; i++)
+	{
+		avg_depth += transformed_vertices[i].z;
+	}
+	avg_depth /= 3;
+	return avg_depth;
+}
+
+void triangle_t_swap(triangle_t* a, triangle_t* b)
+{
+	triangle_t tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void print_list(triangle_t arr[])
+{
+	int size = array_length(arr);
+	for (int i = 0; i < size; i++)
+	{
+		printf("triangle depth : %f\n", arr[i].avg_depth);
+	}
+}
+
+void sortby_avgdepth(triangle_t arr[])
+{
+	int size = array_length(arr);
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = 0; j < size - i - 1; j++)
+		{
+			if (arr[j].avg_depth < arr[j + 1].avg_depth)
+				triangle_t_swap(&arr[j], &arr[j + 1]);
+		}
+	}
+}
+
 void update(void) 
 {
 	//while (!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
@@ -135,7 +175,7 @@ void update(void)
 		vec3_t face_vertices[3];
 		face_vertices[0] = g_mesh2.vertices[mesh_face.a - 1]; 
 		face_vertices[1] = g_mesh2.vertices[mesh_face.b - 1]; 
-		face_vertices[2] = g_mesh2.vertices[mesh_face.c - 1]; 
+		face_vertices[2] = g_mesh2.vertices[mesh_face.c - 1];
 
 		vec3_t transformed_vertices[3];
 
@@ -172,6 +212,9 @@ void update(void)
 			projected_points[j].y += (window_height / 2);
 		}
 
+		// Calculate the average depth for each face based on teh veritces z-values after transformation.
+		float calculated_avg_depth = calculate_avg_depth(transformed_vertices);
+
 		triangle_t projected_triangle = {
 			.points = {
 				{ projected_points[0].x, projected_points[0].y },
@@ -179,11 +222,17 @@ void update(void)
 				{ projected_points[2].x, projected_points[2].y },
 			},
 			.color = mesh_face.color,
+			.avg_depth = calculated_avg_depth,
 		};
 
 		// save the projected triangle in the array of triangles to render
 		array_push(triangles_to_render, projected_triangle);
 	}
+
+	// TODO : Sort the triangle to render by their avg_depth ascd
+	
+	sortby_avgdepth(triangles_to_render);
+	// print_list(triangles_to_render);
 }
 
 void render(void) 
@@ -191,6 +240,7 @@ void render(void)
 	draw_grid();
 
 	// loop all projected triangles and render them
+	// should be sorted by depth : Z value
 	int triangle_array_length = array_length(triangles_to_render);
 	for (int i = 0; i < triangle_array_length; i++)
 	{

@@ -1,9 +1,9 @@
 ﻿  Main.c
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(207,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(207,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(208,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(208,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(209,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(209,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(229,1): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(257,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(257,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(258,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(258,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(259,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(259,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(279,1): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
   MyProject.vcxproj -> C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\Debug\MyProject.exe
