@@ -11,6 +11,11 @@ vec3_t camera_position = { 0.0f, 0.0f, 0.0f };
 
 float fov_factor = 640;
 
+uint32_t vertex_color = Yellow;
+bool bWireframe = true;
+bool bFilledTriangle = true;
+bool bBackfaceCulling = true;
+
 bool is_running = false;
 uint32_t previous_frame_time = 0;
 
@@ -44,7 +49,46 @@ void process_input(void)
 		break;
 	case SDL_KEYDOWN:
 		if (event.key.keysym.sym == SDLK_ESCAPE)
+		{
 			is_running = false;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_1)
+		{
+			vertex_color = Red;
+			bWireframe = true;
+			bFilledTriangle = false;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_2)
+		{
+			bFilledTriangle = false;
+			bWireframe = true;
+			vertex_color = None;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_3)
+		{
+			bFilledTriangle = true;
+			bWireframe = false;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_4)
+		{
+			bFilledTriangle = true;
+			bWireframe = true;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_c)
+		{
+			bBackfaceCulling = true;
+			break;
+		}
+		if (event.key.keysym.sym == SDLK_d)
+		{
+			bBackfaceCulling = false;
+			break;
+		}
 		break;
 	}
 }
@@ -138,7 +182,7 @@ void update(void)
 			transformed_vertices[j] = transformed_vertex;
 		}
 
-		if (backface_culling(transformed_vertices))
+		if (bBackfaceCulling && backface_culling(transformed_vertices))
 			continue;
 
 		// Loop all three vertices tor perform projection
@@ -168,12 +212,15 @@ void render(void)
 	for (int i = 0; i < triangle_array_length; i++)
 	{
 		triangle_t triangle = triangles_to_render[i];
-		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, Yellow); // vertex A
-		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, Yellow); // vertex B
-		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, Yellow); // vertex C
+		draw_rect(triangle.points[0].x, triangle.points[0].y, 3, 3, vertex_color); // vertex A
+		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, vertex_color); // vertex B
+		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, vertex_color); // vertex C
 
-		draw_filled_triangle2(&triangle, White);
-		draw_triangle(triangle, Black);
+		if (bFilledTriangle)
+			draw_filled_triangle2(&triangle, White);
+
+		if (bWireframe)
+			draw_triangle(triangle, Green); // Wireframe
 	}
 
 	// Clear the array of triangles to render every frame loop
