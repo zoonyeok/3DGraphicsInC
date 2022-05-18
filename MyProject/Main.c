@@ -3,6 +3,7 @@
 #include "mesh.h"
 #include "array.h"
 #include "color.h"
+#include "triangle.h"
 
 triangle_t* triangles_to_render = NULL;
 
@@ -27,8 +28,8 @@ void setup(void)
 		window_height
 	);
 
-	//load_cube_mesh_data();
-	load_obj_file_data("f22.obj"); // ./assets/cube.obj
+	// load_cube_mesh_data();
+	 load_obj_file_data("cube.obj"); // ./assets/cube.obj
 }
 
 void process_input(void) 
@@ -72,7 +73,7 @@ bool backface_culling(vec3_t transformed_vertices[])
 	vec3_normalize(&vector_ac);
 
 	// Compute the face normal (using cross product to find perpendicular)
-	vec3_t normal = vec3_cross(vector_ab, vector_ac);
+	vec3_t normal = vec3_cross(vector_ab, vector_ac); // ?? ab ac 순서 중요
 	vec3_normalize(&normal);
 
 	vec3_t camera_ray = vec3_sub(vector_a, camera_position);
@@ -102,7 +103,6 @@ void update(void)
 	g_mesh2.rotation.x += 0.01f;
 	g_mesh2.rotation.y += 0.01f;
 	g_mesh2.rotation.z += 0.01f;
-
 
 	// 배열 초기화
 	triangles_to_render = NULL;
@@ -138,7 +138,6 @@ void update(void)
 			transformed_vertices[j] = transformed_vertex;
 		}
 
-		// TODO: Check backface culling
 		if (backface_culling(transformed_vertices))
 			continue;
 
@@ -163,11 +162,9 @@ void update(void)
 void render(void) 
 {
 	draw_grid();
-	// draw_line(100, 200, 300, 50, 0xFF00FF00);
 
 	// loop all projected triangles and render them
 	int triangle_array_length = array_length(triangles_to_render);
-
 	for (int i = 0; i < triangle_array_length; i++)
 	{
 		triangle_t triangle = triangles_to_render[i];
@@ -175,7 +172,8 @@ void render(void)
 		draw_rect(triangle.points[1].x, triangle.points[1].y, 3, 3, Yellow); // vertex B
 		draw_rect(triangle.points[2].x, triangle.points[2].y, 3, 3, Yellow); // vertex C
 
-		draw_triangle(triangle, Green);
+		draw_filled_triangle2(&triangle, White);
+		draw_triangle(triangle, Black);
 	}
 
 	// Clear the array of triangles to render every frame loop

@@ -2,6 +2,8 @@
 #include "mesh.h"
 #include "array.h"
 #include "string.h"
+#include <stdlib.h>
+
 
 mesh_t g_mesh =
 {
