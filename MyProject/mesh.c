@@ -3,7 +3,7 @@
 #include "array.h"
 #include "string.h"
 #include <stdlib.h>
-
+#include "color.h"
 
 mesh_t g_mesh =
 {
@@ -34,23 +34,23 @@ vec3_t g_cube_vertices[N_CUBE_VERTICES] =
 face_t g_cube_faces[N_CUBE_FACES] = 
 {
     // front
-    {.a = 1, .b = 2, .c = 3 },
-    {.a = 1, .b = 3, .c = 4 },
-    // right
-    {.a = 4, .b = 3, .c = 5 },
-    {.a = 4, .b = 5, .c = 6 },
-    // back
-    {.a = 6, .b = 5, .c = 7 },
-    {.a = 6, .b = 7, .c = 8 },
-    // left
-    {.a = 8, .b = 7, .c = 2 },
-    {.a = 8, .b = 2, .c = 1 },
-    // top
-    {.a = 2, .b = 7, .c = 5 },
-    {.a = 2, .b = 5, .c = 3 },
-    // bottom
-    {.a = 6, .b = 8, .c = 1 },
-    {.a = 6, .b = 1, .c = 4 }
+    {.a = 1, .b = 2, .c = 3, .color = White },
+    {.a = 1, .b = 3, .c = 4, .color = White },
+    // right               
+    {.a = 4, .b = 3, .c = 5, .color = Green },
+    {.a = 4, .b = 5, .c = 6, .color = Green },
+    // back                
+    {.a = 6, .b = 5, .c = 7, .color = Blue },
+    {.a = 6, .b = 7, .c = 8, .color = Blue },
+    // left                
+    {.a = 8, .b = 7, .c = 2, .color = Yellow },
+    {.a = 8, .b = 2, .c = 1, .color = Yellow },
+    // top                 
+    {.a = 2, .b = 7, .c = 5, .color = Magenta },
+    {.a = 2, .b = 5, .c = 3, .color = Magenta },
+    // bottom              
+    {.a = 6, .b = 8, .c = 1, .color = Cyan },
+    {.a = 6, .b = 1, .c = 4, .color = Cyan }
 };
 
 void load_cube_mesh_data(void)
@@ -58,13 +58,13 @@ void load_cube_mesh_data(void)
     for (int i = 0; i < N_CUBE_VERTICES; i++)
     {
         vec3_t cube_vertex = g_cube_vertices[i];
-        array_push(g_mesh.vertices, cube_vertex);
+        array_push(g_mesh2.vertices, cube_vertex);
     }
 
     for (int i = 0; i < N_CUBE_FACES; i++)
     {
         face_t cube_face = g_cube_faces[i];
-        array_push(g_mesh.faces, cube_face);
+        array_push(g_mesh2.faces, cube_face);
     }
 }
 

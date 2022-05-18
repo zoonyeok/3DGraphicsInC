@@ -9,6 +9,19 @@ void int_swap(int* a, int* b)
 	*b = tmp;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Draw a filled a triangle with a flat bottom
+///////////////////////////////////////////////////////////////////////////////
+//
+//        (x0,y0)
+//          / \
+//         /   \
+//        /     \
+//       /       \
+//      /         \
+//  (x1,y1)------(x2,y2)
+//
+///////////////////////////////////////////////////////////////////////////////
 void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
 	// Find the two slopes (two triagnle legs)
@@ -28,6 +41,19 @@ void fill_flat_bottom_triangle(int x0, int y0, int x1, int y1, int x2, int y2, u
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Draw a filled a triangle with a flat top
+///////////////////////////////////////////////////////////////////////////////
+//
+//  (x0,y0)------(x1,y1)
+//      \         /
+//       \       /
+//        \     /
+//         \   /
+//          \ /
+//        (x2,y2)
+//
+///////////////////////////////////////////////////////////////////////////////
 void fill_flat_top_triangle(int x1, int y1, int Mx, int My, int x2, int y2, uint32_t color)
 {
 	float inv_slope_1 = (float)(x2 - x1) / (y2 - y1);
@@ -44,6 +70,29 @@ void fill_flat_top_triangle(int x1, int y1, int Mx, int My, int x2, int y2, uint
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Draw a filled triangle with the flat-top/flat-bottom method
+// We split the original triangle in two, half flat-bottom and half flat-top
+///////////////////////////////////////////////////////////////////////////////
+//
+//          (x0,y0)
+//            / \
+//           /   \
+//          /     \
+//         /       \
+//        /         \
+//   (x1,y1)------(Mx,My)
+//       \_           \
+//          \_         \
+//             \_       \
+//                \_     \
+//                   \    \
+//                     \_  \
+//                        \_\
+//                           \
+//                         (x2,y2)
+//
+///////////////////////////////////////////////////////////////////////////////
 void draw_filled_triangle2(triangle_t* tri, uint32_t color)
 {
 	float x0 = tri->points[0].x; float y0 = tri->points[0].y;
@@ -67,6 +116,7 @@ void draw_filled_triangle2(triangle_t* tri, uint32_t color)
 		int_swap(&x0, &x1);
 	}
 
+	// Avoiding division zero
 	if (y1 == y2)
 	{
 		// 밑에 삼각형이 없는 경우
