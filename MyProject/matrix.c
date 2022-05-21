@@ -126,3 +126,29 @@ mat4_t make_world_matrix(mat4_t s, mat4_t r, mat4_t t)
 	m = mat4_mul_mat4(m, t);
 	return m;
 }
+
+mat4_t mat4_make_perspective(float fov, float aspect, float znear, float zfar)
+{
+	// https://docs.microsoft.com/en-us/windows/win32/direct3d9/d3dxmatrixperspectivefovlh
+	mat4_t m = mat4_zero();
+	m.m[0][0] = aspect * atan(fov / 2);
+	m.m[1][1] = atan(fov / 2);
+	m.m[2][2] = zfar / (zfar - znear);
+	m.m[3][3] = (-zfar * znear) / (zfar - znear);
+	m.m[3][2] = 1.0f;
+	return m;
+}
+
+vec4_t mat4_mul_vec4_project(mat4_t mat_proj, vec4_t v)
+{
+	vec4_t result = mat4_mul_vec4(mat_proj, v);
+
+	// perspective divide
+	if (result.w != 0.0f)
+	{
+		result.x /= result.w;
+		result.y /= result.w;
+		result.z /= result.w;
+	}
+	return result;
+}

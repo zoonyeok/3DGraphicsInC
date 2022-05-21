@@ -9,7 +9,7 @@
 triangle_t* triangles_to_render = NULL;
 
 vec3_t camera_position = { 0.0f, 0.0f, 0.0f };
-float fov_factor = 640;
+mat4_t projection_matrix;
 
 uint32_t vertex_color = Yellow;
 
@@ -32,6 +32,14 @@ void setup(void)
 		window_width,
 		window_height
 	);
+
+	//Initialize the perpective projection matrix
+	// 
+	float fov = M_PI / 3.0f; // 180/3 or 60deg
+	float aspect = (float)window_height / (float)window_width;
+	float znear = 0.1f;
+	float zfar = 100.0f;
+	projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
 	 load_cube_mesh_data();
 	 //load_obj_file_data("cube.obj"); // ./assets/cube.obj
@@ -67,16 +75,6 @@ void process_input(void)
 			cull_method = CULL_NONE;
 		break;
 	}
-}
-
-vec2_t project(vec4_t point)
-{
-	vec2_t projected_point = 
-	{
-		.x = (fov_factor * point.x) / point.z,
-		.y = (fov_factor * point.y) / point.z
-	};
-	return projected_point;
 }
 
 bool backface_culling(vec4_t transformed_vertices[])
@@ -159,8 +157,8 @@ void update(void)
 	previous_frame_time = SDL_GetTicks();
 
 	g_mesh2.rotation.x += 0.01f;
-	g_mesh2.rotation.y += 0.01f;
-	g_mesh2.rotation.z += 0.01f;
+	/*g_mesh2.rotation.y += 0.01f;
+	g_mesh2.rotation.z += 0.01f;*/
 
 	//g_mesh2.scale.x += 0.002f;
 	//g_mesh2.scale.y += 0.002f;
@@ -174,6 +172,7 @@ void update(void)
 	mat4_t rotation_matrix_y = mat4_make_rotation_y(g_mesh2.rotation.y);
 	mat4_t rotation_matrix_z = mat4_make_rotation_z(g_mesh2.rotation.z);
 	mat4_t translation_matrix = mat4_make_translation(g_mesh2.translation.x, g_mesh2.translation.y, g_mesh2.translation.z);
+	
 
 	// 배열 초기화
 	triangles_to_render = NULL;
@@ -216,16 +215,20 @@ void update(void)
 			continue;
 		}
 
-		vec2_t projected_points[3];
+		vec4_t projected_points[3];
 		// Loop all three vertices tor perform projection
 		for (int j = 0; j < 3; j++)
 		{
 			// Project the current vertex
-			projected_points[j] = project(transformed_vertices[j]);
+			projected_points[j] = mat4_mul_vec4_project(projection_matrix, transformed_vertices[j]);
 
-			// Scale and translate the projected points to the middle of the screen
-			projected_points[j].x += (window_width / 2);
-			projected_points[j].y += (window_height / 2);
+			//Scale into the view
+			projected_points[j].x *= (window_width / 2.0f);
+			projected_points[j].y *= (window_height / 2.0f);
+
+			// Translate the projected points to the middle of the screen
+			projected_points[j].x += (window_width / 2.0f);
+			projected_points[j].y += (window_height / 2.0f);
 		}
 
 		// Calculate the average depth for each face based on teh veritces z-values after transformation.
