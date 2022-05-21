@@ -4,6 +4,7 @@
 #include "array.h"
 #include "color.h"
 #include "triangle.h"
+#include "matrix.h"
 
 triangle_t* triangles_to_render = NULL;
 
@@ -68,22 +69,21 @@ void process_input(void)
 	}
 }
 
-vec2_t project(vec3_t point)
+vec2_t project(vec4_t point)
 {
 	vec2_t projected_point = 
 	{
 		.x = (fov_factor * point.x) / point.z,
 		.y = (fov_factor * point.y) / point.z
 	};
-
 	return projected_point;
 }
 
-bool backface_culling(vec3_t transformed_vertices[])
+bool backface_culling(vec4_t transformed_vertices[])
 {
-	vec3_t vector_a = transformed_vertices[0];	/*   A   */
-	vec3_t vector_b = transformed_vertices[1];	/*  / \  */
-	vec3_t vector_c = transformed_vertices[2];	/* C---B */
+	vec3_t vector_a = vec3_from_vec4(transformed_vertices[0]);	/*   A   */
+	vec3_t vector_b = vec3_from_vec4(transformed_vertices[1]);	/*  / \  */
+	vec3_t vector_c = vec3_from_vec4(transformed_vertices[2]);	/* C---B */
 
 	// Get the vector 
 	vec3_t vector_ab = vec3_sub(vector_b, vector_a);
@@ -92,11 +92,12 @@ bool backface_culling(vec3_t transformed_vertices[])
 	vec3_normalize(&vector_ac);
 
 	// Compute the face normal (using cross product to find perpendicular)
-	vec3_t normal = vec3_cross(vector_ab, vector_ac); // ?? ab ac 순서 중요
+	vec3_t normal = vec3_cross(vector_ab, vector_ac); // ab ac 순서 중요
 	vec3_normalize(&normal);
 
 	vec3_t camera_ray = vec3_sub(camera_position, vector_a);
 
+	// float dot_normal_camera = vec3_dot(normal, camera_ray);
 	if (vec3_dot(normal, camera_ray) < 0)
 	{
 		return true;
@@ -104,7 +105,7 @@ bool backface_culling(vec3_t transformed_vertices[])
 	return false;
 }
 
-float calculate_avg_depth(vec3_t transformed_vertices[])
+float calculate_avg_depth(vec4_t transformed_vertices[])
 {
 	float avg_depth = 0.f;
 	for (int i = 0; i < 3; i++)
@@ -150,18 +151,29 @@ void update(void)
 	
 	// Wait some time until the reach the target frame time in milliseconds
 	int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
-
 	// Only delay execution if we are running too fast
 	if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) 
 	{
 		SDL_Delay(time_to_wait);
 	}
-
 	previous_frame_time = SDL_GetTicks();
 
 	g_mesh2.rotation.x += 0.01f;
 	g_mesh2.rotation.y += 0.01f;
 	g_mesh2.rotation.z += 0.01f;
+
+	//g_mesh2.scale.x += 0.002f;
+	//g_mesh2.scale.y += 0.002f;
+	
+	//g_mesh2.translation.x += 0.01f;
+	
+	g_mesh2.translation.z = 5.0f;
+
+	mat4_t scale_matrix = mat4_make_scale(g_mesh2.scale.x, g_mesh2.scale.y, g_mesh2.scale.z);
+	mat4_t rotation_matrix_x = mat4_make_rotation_x(g_mesh2.rotation.x);
+	mat4_t rotation_matrix_y = mat4_make_rotation_y(g_mesh2.rotation.y);
+	mat4_t rotation_matrix_z = mat4_make_rotation_z(g_mesh2.rotation.z);
+	mat4_t translation_matrix = mat4_make_translation(g_mesh2.translation.x, g_mesh2.translation.y, g_mesh2.translation.z);
 
 	// 배열 초기화
 	triangles_to_render = NULL;
@@ -177,25 +189,29 @@ void update(void)
 		face_vertices[1] = g_mesh2.vertices[mesh_face.b - 1]; 
 		face_vertices[2] = g_mesh2.vertices[mesh_face.c - 1];
 
-		vec3_t transformed_vertices[3];
+		vec4_t transformed_vertices[3];
 
 		// loop all three vertices of this current face and apply transformations
 		for (int j = 0; j < 3; j++)
 		{
-			vec3_t transformed_vertex = face_vertices[j];
+			vec4_t transformed_vertex = vec4_from_vec3(face_vertices[j]);
 
-			transformed_vertex = vec3_rotate_x(transformed_vertex, g_mesh2.rotation.x);
-			transformed_vertex = vec3_rotate_y(transformed_vertex, g_mesh2.rotation.y);
-			transformed_vertex = vec3_rotate_z(transformed_vertex, g_mesh2.rotation.z);
-
-			// Translate the vertex away from the camera
-			transformed_vertex.z += 5; //inside monitor
+			// Create a World Matrix SRT
+			mat4_t world_matrix = mat4_identity();
+			//world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
+			world_matrix = mat4_mul_mat4(rotation_matrix_z, world_matrix);
+			world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
+			world_matrix = mat4_mul_mat4(rotation_matrix_x, world_matrix);
+			world_matrix = mat4_mul_mat4(translation_matrix, world_matrix);
+																	
+			// Multiply the world matirx by the original vector						
+			transformed_vertex = mat4_mul_vec4(world_matrix, transformed_vertex);
 
 			// Save transfomed vertex in the arrya of transformed vertices
 			transformed_vertices[j] = transformed_vertex;
 		}
 
-		if (cull_method == CULL_NONE && backface_culling(transformed_vertices))
+		if (cull_method == CULL_BACKFACE && backface_culling(transformed_vertices))
 		{
 			continue;
 		}
@@ -250,7 +266,7 @@ void render(void)
 			draw_filled_triangle2(&triangle, triangle.color);
 
 		if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX || render_method == RENDER_FILL_TRIANGLE_WIRE)
-			draw_triangle(triangle, Green); // Wireframe
+			draw_triangle(&triangle, Green); // Wireframe
 
 		if (render_method == RENDER_WIRE_VERTEX)
 		{

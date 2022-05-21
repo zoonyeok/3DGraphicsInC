@@ -9,14 +9,18 @@ mesh_t g_mesh =
 {
     .vertices = NULL,
     .faces = NULL,
-    .rotation = {0,0,0}
+    .rotation = { 0 ,0, 0 },
+    .scale = { 1.0f, 1.0f, 1.0f },
+    .translation = { 0, 0, 0},
 };
 
 mesh_t g_mesh2 =
 {
     .vertices = NULL,
     .faces = NULL,
-    .rotation = {0,0,0}
+    .rotation = {0,0,0},
+     .scale = { 1.0f, 1.0f, 1.0f },
+    .translation = { 0, 0, 0},
 };
 
 vec3_t g_cube_vertices[N_CUBE_VERTICES] = 

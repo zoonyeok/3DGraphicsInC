@@ -2,7 +2,7 @@
 #include <math.h>
 
 /****************************
-*  Vector 2D Functions
+*  Vector2 Functions
 ****************************/
 float vec2_length(vec2_t v)
 {
@@ -62,7 +62,7 @@ void vec2_normalize(vec2_t* v)
 }
 
 /****************************
-*  Vector 3D Functions
+*  Vector3 Functions
 ****************************/
 float vec3_length(vec3_t v)
 {
@@ -173,4 +173,30 @@ vec3_t vec3_rotate_z(vec3_t v, float angle)
 		.z = v.z
 	};
 	return rotated_vector;
+}
+
+vec3_t vec3_from_vec4(vec4_t v)
+{
+	vec3_t result =
+	{
+		.x = v.x,
+		.y = v.y,
+		.z = v.z
+	};
+	return result;
+}
+
+/****************************
+*  Vector4 Functions
+****************************/
+vec4_t vec4_from_vec3(vec3_t v)
+{
+	vec4_t vec4 =
+	{
+		.x = v.x,
+		.y = v.y,
+		.z = v.z,
+		.w = 1.0f
+	};
+	return vec4;
 }
