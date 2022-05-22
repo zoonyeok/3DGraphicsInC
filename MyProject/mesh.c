@@ -19,7 +19,7 @@ mesh_t g_mesh2 =
     .vertices = NULL,
     .faces = NULL,
     .rotation = {0,0,0},
-     .scale = { 1.0f, 1.0f, 1.0f },
+    .scale = { 1.0f, 1.0f, 1.0f },
     .translation = { 0, 0, 0},
 };
 
@@ -41,20 +41,20 @@ face_t g_cube_faces[N_CUBE_FACES] =
     {.a = 1, .b = 2, .c = 3, .color = White },
     {.a = 1, .b = 3, .c = 4, .color = White },
     // right               
-    {.a = 4, .b = 3, .c = 5, .color = Green },
-    {.a = 4, .b = 5, .c = 6, .color = Green },
-    // back                
-    {.a = 6, .b = 5, .c = 7, .color = Blue },
-    {.a = 6, .b = 7, .c = 8, .color = Blue },
-    // left                
-    {.a = 8, .b = 7, .c = 2, .color = Yellow },
-    {.a = 8, .b = 2, .c = 1, .color = Yellow },
-    // top                 
-    {.a = 2, .b = 7, .c = 5, .color = Magenta },
-    {.a = 2, .b = 5, .c = 3, .color = Magenta },
-    // bottom              
-    {.a = 6, .b = 8, .c = 1, .color = Cyan },
-    {.a = 6, .b = 1, .c = 4, .color = Cyan }
+    {.a = 4, .b = 3, .c = 5, .color = White },
+    {.a = 4, .b = 5, .c = 6, .color = White },
+    // back                           
+    {.a = 6, .b = 5, .c = 7, .color = White },
+    {.a = 6, .b = 7, .c = 8, .color = White },
+    // left                           
+    {.a = 8, .b = 7, .c = 2, .color = White },
+    {.a = 8, .b = 2, .c = 1, .color = White },
+    // top                            
+    {.a = 2, .b = 7, .c = 5, .color = White },
+    {.a = 2, .b = 5, .c = 3, .color = White },
+    // bottom                         
+    {.a = 6, .b = 8, .c = 1, .color = White },
+    {.a = 6, .b = 1, .c = 4, .color = White }
 };
 
 void load_cube_mesh_data(void)
@@ -174,7 +174,8 @@ void load_obj_file_data2(char* filename)
             {
                 .a = vertex_indices[0],
                 .b = vertex_indices[1],
-                .c = vertex_indices[2]
+                .c = vertex_indices[2],
+                .color = 0xFFFFFFFF,
             };
             array_push(g_mesh2.faces, face);
         }

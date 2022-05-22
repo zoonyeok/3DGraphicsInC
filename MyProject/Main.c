@@ -5,6 +5,7 @@
 #include "color.h"
 #include "triangle.h"
 #include "matrix.h"
+#include "light.h"
 
 triangle_t* triangles_to_render = NULL;
 
@@ -34,15 +35,14 @@ void setup(void)
 	);
 
 	//Initialize the perpective projection matrix
-	// 
 	float fov = M_PI / 3.0f; // 180/3 or 60deg
 	float aspect = (float)window_height / (float)window_width;
 	float znear = 0.1f;
 	float zfar = 100.0f;
 	projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-	 load_cube_mesh_data();
-	 //load_obj_file_data("cube.obj"); // ./assets/cube.obj
+	//load_cube_mesh_data();
+	load_obj_file_data("f22.obj"); // ./assets/cube.obj
 }
 
 void process_input(void) 
@@ -80,22 +80,10 @@ void process_input(void)
 bool backface_culling(vec4_t transformed_vertices[])
 {
 	vec3_t vector_a = vec3_from_vec4(transformed_vertices[0]);	/*   A   */
-	vec3_t vector_b = vec3_from_vec4(transformed_vertices[1]);	/*  / \  */
-	vec3_t vector_c = vec3_from_vec4(transformed_vertices[2]);	/* C---B */
-
-	// Get the vector 
-	vec3_t vector_ab = vec3_sub(vector_b, vector_a);
-	vec3_t vector_ac = vec3_sub(vector_c, vector_a);
-	vec3_normalize(&vector_ab);
-	vec3_normalize(&vector_ac);
-
-	// Compute the face normal (using cross product to find perpendicular)
-	vec3_t normal = vec3_cross(vector_ab, vector_ac); // ab ac 순서 중요
-	vec3_normalize(&normal);
-
+	vec3_t normal = make_normal(transformed_vertices);
 	vec3_t camera_ray = vec3_sub(camera_position, vector_a);
 
-	// float dot_normal_camera = vec3_dot(normal, camera_ray);
+	float dot_normal_camera = vec3_dot(normal, camera_ray);
 	if (vec3_dot(normal, camera_ray) < 0)
 	{
 		return true;
@@ -142,11 +130,9 @@ void sortby_avgdepth(triangle_t arr[])
 		}
 	}
 }
-
+ 
 void update(void) 
 {
-	//while (!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
-	
 	// Wait some time until the reach the target frame time in milliseconds
 	int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
 	// Only delay execution if we are running too fast
@@ -157,8 +143,8 @@ void update(void)
 	previous_frame_time = SDL_GetTicks();
 
 	g_mesh2.rotation.x += 0.01f;
-	/*g_mesh2.rotation.y += 0.01f;
-	g_mesh2.rotation.z += 0.01f;*/
+	g_mesh2.rotation.y += 0.01f;
+	g_mesh2.rotation.z += 0.01f;
 
 	//g_mesh2.scale.x += 0.002f;
 	//g_mesh2.scale.y += 0.002f;
@@ -173,7 +159,6 @@ void update(void)
 	mat4_t rotation_matrix_z = mat4_make_rotation_z(g_mesh2.rotation.z);
 	mat4_t translation_matrix = mat4_make_translation(g_mesh2.translation.x, g_mesh2.translation.y, g_mesh2.translation.z);
 	
-
 	// 배열 초기화
 	triangles_to_render = NULL;
 
@@ -231,16 +216,22 @@ void update(void)
 			projected_points[j].y += (window_height / 2.0f);
 		}
 
-		// Calculate the average depth for each face based on teh veritces z-values after transformation.
+		// Calculate the average depth for each face based on the veritces z-values after transformation.
 		float calculated_avg_depth = calculate_avg_depth(transformed_vertices);
 
+		// face normal and light ray
+		float light_intensity = light_intensity_factor(transformed_vertices);
+		
+		// Calculate the triangle color based on the light angle
+		uint32_t triangle_color = light_apply_intensity(mesh_face.color, light_intensity);
+		
 		triangle_t projected_triangle = {
 			.points = {
 				{ projected_points[0].x, projected_points[0].y },
 				{ projected_points[1].x, projected_points[1].y },
 				{ projected_points[2].x, projected_points[2].y },
 			},
-			.color = mesh_face.color,
+			.color = triangle_color,
 			.avg_depth = calculated_avg_depth,
 		};
 
@@ -248,8 +239,6 @@ void update(void)
 		array_push(triangles_to_render, projected_triangle);
 	}
 
-	// TODO : Sort the triangle to render by their avg_depth ascd
-	
 	sortby_avgdepth(triangles_to_render);
 	// print_list(triangles_to_render);
 }

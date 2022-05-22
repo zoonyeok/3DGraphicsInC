@@ -200,3 +200,21 @@ vec4_t vec4_from_vec3(vec3_t v)
 	};
 	return vec4;
 }
+
+vec3_t make_normal(vec4_t transformed_vertices[])
+{
+	vec3_t vector_a = vec3_from_vec4(transformed_vertices[0]);	/*   A   */
+	vec3_t vector_b = vec3_from_vec4(transformed_vertices[1]);	/*  / \  */
+	vec3_t vector_c = vec3_from_vec4(transformed_vertices[2]);	/* C---B */
+
+	// Get the vector 
+	vec3_t vector_ab = vec3_sub(vector_b, vector_a);
+	vec3_t vector_ac = vec3_sub(vector_c, vector_a);
+	vec3_normalize(&vector_ab);
+	vec3_normalize(&vector_ac);
+
+	// Compute the face normal (using cross product to find perpendicular)
+	vec3_t normal = vec3_cross(vector_ab, vector_ac); // ab ac 순서 중요
+	vec3_normalize(&normal);
+	return normal;
+}
