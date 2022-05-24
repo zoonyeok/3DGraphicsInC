@@ -12,6 +12,6 @@ typedef struct
 extern light_t g_light;
 
 uint32_t light_apply_intensity(uint32_t original_color, float percentage_factor);
-float light_intensity_factor(vec4_t transformed_vertices[]);
+float light_intensity_factor(vec3_t normal);
 
 #endif

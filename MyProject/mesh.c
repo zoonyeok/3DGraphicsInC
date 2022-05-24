@@ -106,9 +106,9 @@ void load_obj_file_data(char* filename)
                 ptr = strtok_s(NULL, " v", &context);
             }
 
-            v.x = arr[0]; 
-            v.y = arr[1]; 
-            v.z = arr[2];
+            v.x =  arr[0]; 
+            v.y = -arr[1]; 
+            v.z =  arr[2];
             array_push(g_mesh2.vertices, v);
         }
 
@@ -128,13 +128,14 @@ void load_obj_file_data(char* filename)
             f.a = arr[0]; 
             f.b = arr[1]; 
             f.c = arr[2];
+            f.color = White;
             array_push(g_mesh2.faces, f);
         }
         count++;
     }
 
     fclose(fr);
-    printf("FILE %s has %lu character\n", filename, count);
+    // printf("FILE %s has %lu character\n", filename, count);
 }
 
 void load_obj_file_data2(char* filename)
@@ -175,7 +176,7 @@ void load_obj_file_data2(char* filename)
                 .a = vertex_indices[0],
                 .b = vertex_indices[1],
                 .c = vertex_indices[2],
-                .color = 0xFFFFFFFF,
+                .color = White,
             };
             array_push(g_mesh2.faces, face);
         }

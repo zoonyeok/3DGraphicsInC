@@ -64,50 +64,46 @@ void vec2_normalize(vec2_t* v)
 /****************************
 *  Vector3 Functions
 ****************************/
-float vec3_length(vec3_t v)
+float vec3_length(vec3_t* v)
 {
-	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	return sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
 }
 
-vec3_t vec3_add(vec3_t a, vec3_t b)
+vec3_t vec3_add(vec3_t a, vec3_t b) 
 {
-	vec3_t result = 
-	{
-		.x = a.x + b.x ,
-		.y = a.y + b.y ,
+	vec3_t result = {
+		.x = a.x + b.x,
+		.y = a.y + b.y,
 		.z = a.z + b.z
 	};
 	return result;
 }
 
-vec3_t vec3_sub(vec3_t a, vec3_t b)
+vec3_t vec3_sub(vec3_t a, vec3_t b) 
 {
-	vec3_t result = 
-	{
-		.x = a.x - b.x ,
-		.y = a.y - b.y , 
+	vec3_t result = {
+		.x = a.x - b.x,
+		.y = a.y - b.y,
 		.z = a.z - b.z
 	};
 	return result;
 }
 
-vec3_t vec3_mul(vec3_t v, float factor)
+vec3_t vec3_mul(vec3_t v, float factor) 
 {
-	vec3_t result = 
-	{
-		.x = v.x * factor ,
-		.y = v.y * factor ,
+	vec3_t result = {
+		.x = v.x * factor,
+		.y = v.y * factor,
 		.z = v.z * factor
 	};
 	return result;
 }
 
-vec3_t vec3_div(vec3_t v, float factor)
+vec3_t vec3_div(vec3_t v, float factor) 
 {
-	vec3_t result = 
-	{
-		.x = v.x / factor ,
-		.y = v.y / factor ,
+	vec3_t result = {
+		.x = v.x / factor,
+		.y = v.y / factor,
 		.z = v.z / factor
 	};
 	return result;
@@ -117,18 +113,20 @@ vec3_t vec3_cross(vec3_t a, vec3_t b)
 {
 	vec3_t result = 
 	{
-		.x = a.x * b.z - a.z * b.y,
-		.y = a.z * b.x - a.x * b.z,
-		.z = a.x * b.y - a.y * b.x
+	   .x = a.y * b.z - a.z * b.y,
+	   .y = a.z * b.x - a.x * b.z,
+	   .z = a.x * b.y - a.y * b.x
 	};
 	return result;
 }
 
-// how aligned are two vectors each other
-// a.b = 1 乞青
-// a.b < 0 
-// a.b = 0 荐流
-// a.b < 0 
+/// <summary>
+/// how aligned are two vectors each other
+/// a.b = 1 乞青
+/// a.b > 0 
+/// a.b = 0 荐流
+/// a.b < 0 
+/// </summary>
 float vec3_dot(vec3_t a, vec3_t b)
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
@@ -136,7 +134,7 @@ float vec3_dot(vec3_t a, vec3_t b)
 
 void vec3_normalize(vec3_t* v)
 {
-	float length = vec3_length(*v);
+	float length = vec3_length(v);
 	v->x / length;
 	v->y / length;
 	v->z / length;
@@ -191,14 +189,14 @@ vec3_t vec3_from_vec4(vec4_t v)
 ****************************/
 vec4_t vec4_from_vec3(vec3_t v)
 {
-	vec4_t vec4 =
+	vec4_t result =
 	{
 		.x = v.x,
 		.y = v.y,
 		.z = v.z,
 		.w = 1.0f
 	};
-	return vec4;
+	return result;
 }
 
 vec3_t make_normal(vec4_t transformed_vertices[])

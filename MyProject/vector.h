@@ -37,7 +37,7 @@ void vec2_normalize(vec2_t* v);
 /****************************
 *  Vector3 Functions
 ****************************/
-float vec3_length(vec3_t v);
+float vec3_length(vec3_t* v);
 vec3_t vec3_add(vec3_t a, vec3_t b);
 vec3_t vec3_sub(vec3_t a, vec3_t b);
 vec3_t vec3_mul(vec3_t v, float factor);

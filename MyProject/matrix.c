@@ -25,8 +25,12 @@ mat4_t mat4_identity(void)
 	return m;
 }
 
-mat4_t mat4_make_scale(float sx, float sy, float sz)
+mat4_t mat4_make_scale(float sx, float sy, float sz) 
 {
+	// | sx  0  0  0 |
+	// |  0 sy  0  0 |
+	// |  0  0 sz  0 |
+	// |  0  0  0  1 |
 	mat4_t m = mat4_identity();
 	m.m[0][0] = sx;
 	m.m[1][1] = sy;
@@ -61,8 +65,12 @@ mat4_t mat4_mul_mat4(mat4_t m1, mat4_t m2)
 	return m;
 }
 
-mat4_t mat4_make_translation(float tx, float ty, float tz)
+mat4_t mat4_make_translation(float tx, float ty, float tz) 
 {
+	// | 1  0  0  tx |
+	// | 0  1  0  ty |
+	// | 0  0  1  tz |
+	// | 0  0  0  1  |
 	mat4_t m = mat4_identity();
 	m.m[0][3] = tx;
 	m.m[1][3] = ty;
@@ -70,14 +78,14 @@ mat4_t mat4_make_translation(float tx, float ty, float tz)
 	return m;
 }
 
-mat4_t mat4_make_rotation_x(float angle)
+mat4_t mat4_make_rotation_x(float angle) 
 {
 	float c = cos(angle);
 	float s = sin(angle);
-	// 1  0  0  0 
-	// 0  c -s  0
-	// 0  s  c  0
-	// 0  0  0  1
+	// | 1  0  0  0 |
+	// | 0  c -s  0 |
+	// | 0  s  c  0 |
+	// | 0  0  0  1 |
 	mat4_t m = mat4_identity();
 	m.m[1][1] = c;
 	m.m[1][2] = -s;
@@ -86,14 +94,14 @@ mat4_t mat4_make_rotation_x(float angle)
 	return m;
 }
 
-mat4_t mat4_make_rotation_y(float angle)
+mat4_t mat4_make_rotation_y(float angle) 
 {
 	float c = cos(angle);
 	float s = sin(angle);
-	//  c  0  s  0 
-	//  0  1  0  0
-	// -s  0  c  0
-	//  0  0  0  1
+	// |  c  0  s  0 |
+	// |  0  1  0  0 |
+	// | -s  0  c  0 |
+	// |  0  0  0  1 |
 	mat4_t m = mat4_identity();
 	m.m[0][0] = c;
 	m.m[0][2] = s;
@@ -102,14 +110,14 @@ mat4_t mat4_make_rotation_y(float angle)
 	return m;
 }
 
-mat4_t mat4_make_rotation_z(float angle)
+mat4_t mat4_make_rotation_z(float angle) 
 {
 	float c = cos(angle);
 	float s = sin(angle);
-	//  c  -s  0  0 
-	//  s   c  0  0
-	//  0   0  1  0
-	//  0   0  0  1
+	// | c -s  0  0 |
+	// | s  c  0  0 |
+	// | 0  0  1  0 |
+	// | 0  0  0  1 |
 	mat4_t m = mat4_identity();
 	m.m[0][0] = c;
 	m.m[0][1] = -s;
@@ -130,12 +138,16 @@ mat4_t make_world_matrix(mat4_t s, mat4_t r, mat4_t t)
 mat4_t mat4_make_perspective(float fov, float aspect, float znear, float zfar)
 {
 	// https://docs.microsoft.com/en-us/windows/win32/direct3d9/d3dxmatrixperspectivefovlh
+	// | (h/w)*1/tan(fov/2)             0              0                 0 |
+	// |                  0  1/tan(fov/2)              0                 0 |
+	// |                  0             0     zf/(zf-zn)  (-zf*zn)/(zf-zn) |
+	// |                  0             0              1                 0 |
 	mat4_t m = mat4_zero();
-	m.m[0][0] = aspect * atan(fov / 2);
-	m.m[1][1] = atan(fov / 2);
+	m.m[0][0] = aspect * (1 / tan(fov / 2));
+	m.m[1][1] = 1 / tan(fov / 2);
 	m.m[2][2] = zfar / (zfar - znear);
-	m.m[3][3] = (-zfar * znear) / (zfar - znear);
-	m.m[3][2] = 1.0f;
+	m.m[2][3] = (-zfar * znear) / (zfar - znear);
+	m.m[3][2] = 1.0;
 	return m;
 }
 
