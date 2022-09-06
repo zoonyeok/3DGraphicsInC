@@ -5,20 +5,11 @@
 #include <stdlib.h>
 #include "color.h"
 
-mesh_t g_mesh =
-{
-    .vertices = NULL,
-    .faces = NULL,
-    .rotation = { 0 ,0, 0 },
-    .scale = { 1.0f, 1.0f, 1.0f },
-    .translation = { 0, 0, 0},
-};
-
 mesh_t g_mesh2 =
 {
     .vertices = NULL,
     .faces = NULL,
-    .rotation = {0,0,0},
+    .rotation = { 0 ,0, 0 },
     .scale = { 1.0f, 1.0f, 1.0f },
     .translation = { 0, 0, 0},
 };
@@ -35,26 +26,26 @@ vec3_t g_cube_vertices[N_CUBE_VERTICES] =
     {.x = -1, .y = -1, .z =  1 }    // 8
 };
 
-face_t g_cube_faces[N_CUBE_FACES] = 
+face_t g_cube_faces[N_CUBE_FACES] =
 {
     // front
-    {.a = 1, .b = 2, .c = 3, .color = White },
-    {.a = 1, .b = 3, .c = 4, .color = White },
-    // right               
-    {.a = 4, .b = 3, .c = 5, .color = White },
-    {.a = 4, .b = 5, .c = 6, .color = White },
-    // back                           
-    {.a = 6, .b = 5, .c = 7, .color = White },
-    {.a = 6, .b = 7, .c = 8, .color = White },
-    // left                           
-    {.a = 8, .b = 7, .c = 2, .color = White },
-    {.a = 8, .b = 2, .c = 1, .color = White },
-    // top                            
-    {.a = 2, .b = 7, .c = 5, .color = White },
-    {.a = 2, .b = 5, .c = 3, .color = White },
-    // bottom                         
-    {.a = 6, .b = 8, .c = 1, .color = White },
-    {.a = 6, .b = 1, .c = 4, .color = White }
+    {.a = 1, .b = 2, .c = 3, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 1, .b = 3, .c = 4, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White },
+    // right
+    {.a = 4, .b = 3, .c = 5, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 4, .b = 5, .c = 6, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White },
+    // back
+    {.a = 6, .b = 5, .c = 7, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 6, .b = 7, .c = 8, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White },
+    // left
+    {.a = 8, .b = 7, .c = 2, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 8, .b = 2, .c = 1, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White },
+    // top
+    {.a = 2, .b = 7, .c = 5, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 2, .b = 5, .c = 3, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White },
+    // bottom
+    {.a = 6, .b = 8, .c = 1, .a_uv = { 0, 0 }, .b_uv = { 0, 1 }, .c_uv = { 1, 1 }, .color = White },
+    {.a = 6, .b = 1, .c = 4, .a_uv = { 0, 0 }, .b_uv = { 1, 1 }, .c_uv = { 1, 0 }, .color = White }
 };
 
 void load_cube_mesh_data(void)
@@ -107,7 +98,7 @@ void load_obj_file_data(char* filename)
             }
 
             v.x =  arr[0]; 
-            v.y = -arr[1]; 
+            v.y =  arr[1]; 
             v.z =  arr[2];
             array_push(g_mesh2.vertices, v);
         }

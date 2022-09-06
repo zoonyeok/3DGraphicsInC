@@ -25,7 +25,7 @@ mat4_t mat4_identity(void)
 	return m;
 }
 
-mat4_t mat4_make_scale(float sx, float sy, float sz) 
+mat4_t mat4_make_scale(float sx, float sy, float sz)
 {
 	// | sx  0  0  0 |
 	// |  0 sy  0  0 |
@@ -48,24 +48,35 @@ vec4_t mat4_mul_vec4(mat4_t m, vec4_t v)
 	return result;
 }
 
-mat4_t mat4_mul_mat4(mat4_t m1, mat4_t m2)
+//mat4_t mat4_mul_mat4(mat4_t m1, mat4_t m2)
+//{
+//	mat4_t m;
+//	for (int r = 0; r < 4; r++)
+//	{
+//		for (int c = 0; c < 4; c++)
+//		{
+//			m.m[r][c] = 
+//				m1.m[r][0] * m2.m[0][c] + 
+//				m1.m[r][1] * m2.m[1][c] + 
+//				m1.m[r][2] * m2.m[2][c] + 
+//				m1.m[r][3] * m2.m[3][c];
+//		}
+//	}
+//	return m;
+//}
+
+mat4_t mat4_mul_mat4(mat4_t a, mat4_t b)
 {
 	mat4_t m;
-	for (int r = 0; r < 4; r++)
-	{
-		for (int c = 0; c < 4; c++)
-		{
-			m.m[r][c] = 
-				m1.m[r][0] * m2.m[0][c] + 
-				m1.m[r][1] * m2.m[1][c] + 
-				m1.m[r][2] * m2.m[2][c] + 
-				m1.m[r][3] * m2.m[3][c];
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			m.m[i][j] = a.m[i][0] * b.m[0][j] + a.m[i][1] * b.m[1][j] + a.m[i][2] * b.m[2][j] + a.m[i][3] * b.m[3][j];
 		}
 	}
 	return m;
 }
 
-mat4_t mat4_make_translation(float tx, float ty, float tz) 
+mat4_t mat4_make_translation(float tx, float ty, float tz)
 {
 	// | 1  0  0  tx |
 	// | 0  1  0  ty |
@@ -78,7 +89,7 @@ mat4_t mat4_make_translation(float tx, float ty, float tz)
 	return m;
 }
 
-mat4_t mat4_make_rotation_x(float angle) 
+mat4_t mat4_make_rotation_x(float angle)
 {
 	float c = cos(angle);
 	float s = sin(angle);
@@ -94,7 +105,7 @@ mat4_t mat4_make_rotation_x(float angle)
 	return m;
 }
 
-mat4_t mat4_make_rotation_y(float angle) 
+mat4_t mat4_make_rotation_y(float angle)
 {
 	float c = cos(angle);
 	float s = sin(angle);
@@ -110,7 +121,7 @@ mat4_t mat4_make_rotation_y(float angle)
 	return m;
 }
 
-mat4_t mat4_make_rotation_z(float angle) 
+mat4_t mat4_make_rotation_z(float angle)
 {
 	float c = cos(angle);
 	float s = sin(angle);
@@ -142,7 +153,7 @@ mat4_t mat4_make_perspective(float fov, float aspect, float znear, float zfar)
 	// |                  0  1/tan(fov/2)              0                 0 |
 	// |                  0             0     zf/(zf-zn)  (-zf*zn)/(zf-zn) |
 	// |                  0             0              1                 0 |
-	mat4_t m = mat4_zero();
+	mat4_t m = { {{ 0 }} };
 	m.m[0][0] = aspect * (1 / tan(fov / 2));
 	m.m[1][1] = 1 / tan(fov / 2);
 	m.m[2][2] = zfar / (zfar - znear);
@@ -153,11 +164,11 @@ mat4_t mat4_make_perspective(float fov, float aspect, float znear, float zfar)
 
 vec4_t mat4_mul_vec4_project(mat4_t mat_proj, vec4_t v)
 {
+	// multiply the projection matrix by our original vector
 	vec4_t result = mat4_mul_vec4(mat_proj, v);
 
-	// perspective divide
-	if (result.w != 0.0f)
-	{
+	// perform perspective divide with original z-value that is now stored in w
+	if (result.w != 0.0) {
 		result.x /= result.w;
 		result.y /= result.w;
 		result.z /= result.w;

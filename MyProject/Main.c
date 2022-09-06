@@ -4,6 +4,7 @@
 #include "array.h"
 #include "color.h"
 #include "triangle.h"
+#include "texture.h"
 #include "matrix.h"
 #include "light.h"
 
@@ -19,7 +20,7 @@ uint32_t previous_frame_time = 0;
 
 void setup(void)
 {
-	render_method = RENDER_WIRE;
+	render_method = RENDER_FILL_TRIANGLE;
 	cull_method = CULL_BACKFACE;
 
 	// Allocate the required memory in bytes to hold the color buffer
@@ -41,9 +42,14 @@ void setup(void)
 	float zfar = 100.0f;
 	projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-	// load_cube_mesh_data();
-	load_obj_file_data("f22.obj"); // ./assets/cube.obj
-	vec3_normalize(&g_light.direction);
+	// Manually load the hardcoded texture data from the static array
+	mesh_texture = (uint32_t*)REDBRICK_TEXTURE;
+	texture_width = 64;
+	texture_height = 64;
+
+	load_cube_mesh_data();
+	//load_obj_file_data("f22.obj"); // ./assets/cube.obj
+	//vec3_normalize(&g_light.direction);
 }
 
 void process_input(void)
@@ -70,6 +76,10 @@ void process_input(void)
 			render_method = RENDER_FILL_TRIANGLE;
 		if (event.key.keysym.sym == SDLK_4)
 			render_method = RENDER_FILL_TRIANGLE_WIRE;
+		if (event.key.keysym.sym == SDLK_5)
+			render_method = RENDER_TEXTURED;
+		if (event.key.keysym.sym == SDLK_6)
+			render_method = RENDER_TEXTURED_WIRE;
 		if (event.key.keysym.sym == SDLK_c)
 			cull_method = CULL_BACKFACE;
 		if (event.key.keysym.sym == SDLK_d)
@@ -82,6 +92,7 @@ bool backface_culling(vec4_t transformed_vertices[], vec3_t normal)
 {
 	vec3_t vector_a = vec3_from_vec4(transformed_vertices[0]);	/*   A   */
 	vec3_t camera_ray = vec3_sub(camera_position, vector_a);
+	vec3_normalize(&camera_ray);
 
 	// float dot_normal_camera = vec3_dot(normal, camera_ray);
 	if (vec3_dot(normal, camera_ray) < 0)
@@ -93,13 +104,7 @@ bool backface_culling(vec4_t transformed_vertices[], vec3_t normal)
 
 float calculate_avg_depth(vec4_t transformed_vertices[])
 {
-	float avg_depth = 0.f;
-	for (int i = 0; i < 3; i++)
-	{
-		avg_depth += transformed_vertices[i].z;
-	}
-	avg_depth /= 3.0f;
-	return avg_depth;
+	return (transformed_vertices[0].z + transformed_vertices[1].z + transformed_vertices[2].z) / 3.0;
 }
 
 void triangle_t_swap(triangle_t* a, triangle_t* b)
@@ -143,9 +148,12 @@ void update(void)
 	}
 	previous_frame_time = SDL_GetTicks();
 
-	//g_mesh2.rotation.x += 0.01;
-	g_mesh2.rotation.y += 0.01f;
-	//g_mesh2.rotation.z += 0.01f;
+	// Initialize the array of triangles to render
+	triangles_to_render = NULL;
+
+	g_mesh2.rotation.x += 0.005f;
+	g_mesh2.rotation.y += 0.0f;
+	g_mesh2.rotation.z += 0.0f;
 
 	//g_mesh2.scale.x += 0.002f;
 	//g_mesh2.scale.y += 0.002f;
@@ -183,6 +191,7 @@ void update(void)
 
 			// Create a World Matrix SRT
 			mat4_t world_matrix = mat4_identity();
+
 			//world_matrix = mat4_mul_mat4(scale_matrix, world_matrix);
 			world_matrix = mat4_mul_mat4(rotation_matrix_z, world_matrix);
 			world_matrix = mat4_mul_mat4(rotation_matrix_y, world_matrix);
@@ -198,12 +207,13 @@ void update(void)
 
 		vec3_t normal = make_normal(transformed_vertices);
 
-		if (cull_method == CULL_BACKFACE && backface_culling(transformed_vertices,normal))
+		if (cull_method == CULL_BACKFACE && backface_culling(transformed_vertices, normal))
 		{
 			continue;
 		}
 
 		vec4_t projected_points[3];
+
 		// Loop all three vertices tor perform projection
 		for (int j = 0; j < 3; j++)
 		{
@@ -214,6 +224,8 @@ void update(void)
 			projected_points[j].x *= (window_width / 2.0f);
 			projected_points[j].y *= (window_height / 2.0f);
 
+			projected_points[j].y *= -1;
+
 			// Translate the projected points to the middle of the screen
 			projected_points[j].x += (window_width / 2.0f);
 			projected_points[j].y += (window_height / 2.0f);
@@ -222,6 +234,7 @@ void update(void)
 		//Calculate the average depth for each face based on the veritces z-values after transformation.
 		float avg_depth = calculate_avg_depth(transformed_vertices);
 
+		// Calculate the triangle color based on the light angle
 		float light_intensity = light_intensity_factor(normal);
 		uint32_t triangle_color = light_apply_intensity(mesh_face.color, light_intensity);
 
@@ -230,6 +243,12 @@ void update(void)
 				{ projected_points[0].x, projected_points[0].y },
 				{ projected_points[1].x, projected_points[1].y },
 				{ projected_points[2].x, projected_points[2].y },
+			},
+			.texcoords = 
+			{
+				{ mesh_face.a_uv.u, mesh_face.a_uv.v },
+				{ mesh_face.b_uv.u, mesh_face.b_uv.v },
+				{ mesh_face.c_uv.u, mesh_face.c_uv.v }
 			},
 			.color = triangle_color,
 			.avg_depth = avg_depth,
@@ -257,7 +276,14 @@ void render(void)
 		if (render_method == RENDER_FILL_TRIANGLE || render_method == RENDER_FILL_TRIANGLE_WIRE)
 			draw_filled_triangle2(&triangle, triangle.color);
 
-		if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX || render_method == RENDER_FILL_TRIANGLE_WIRE)
+		// Draw textured triangle 
+		if (render_method == RENDER_TEXTURED || render_method == RENDER_TEXTURED_WIRE)
+		{
+			draw_textured_triangle(&triangle, mesh_texture);
+		}
+
+		if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX 
+			|| render_method == RENDER_FILL_TRIANGLE_WIRE || render_method == RENDER_TEXTURED_WIRE)
 			draw_triangle(&triangle, Green); // Wireframe
 
 		if (render_method == RENDER_WIRE_VERTEX)
