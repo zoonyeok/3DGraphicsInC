@@ -151,9 +151,9 @@ void update(void)
 	// Initialize the array of triangles to render
 	triangles_to_render = NULL;
 
-	g_mesh2.rotation.x += 0.005f;
-	g_mesh2.rotation.y += 0.0f;
-	g_mesh2.rotation.z += 0.0f;
+	//g_mesh2.rotation.x += 0.005f;
+	g_mesh2.rotation.y += 0.005f;
+	//g_mesh2.rotation.z += 0.0f;
 
 	//g_mesh2.scale.x += 0.002f;
 	//g_mesh2.scale.y += 0.002f;
@@ -240,9 +240,9 @@ void update(void)
 
 		triangle_t projected_triangle = {
 			.points = {
-				{ projected_points[0].x, projected_points[0].y },
-				{ projected_points[1].x, projected_points[1].y },
-				{ projected_points[2].x, projected_points[2].y },
+				{ projected_points[0].x, projected_points[0].y , projected_points[0].z, projected_points[0].w },
+				{ projected_points[1].x, projected_points[1].y , projected_points[1].z, projected_points[1].w },
+				{ projected_points[2].x, projected_points[2].y , projected_points[2].z, projected_points[2].w },
 			},
 			.texcoords = 
 			{
