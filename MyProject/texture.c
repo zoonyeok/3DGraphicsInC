@@ -89,7 +89,5 @@ void load_png_texture_data(char* filename)
             texture_width = upng_get_width(png_texture);
             texture_height = upng_get_height(png_texture);
         }
-        
-        //upng_free(png_texture);
     }
 }

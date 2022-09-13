@@ -210,10 +210,9 @@ void draw_texel(int x, int y, uint32_t* texture, vec4_t point_a, vec4_t point_b,
 	interpolated_v /= interpolated_reciprocal_w;
 
 	// Map the UV coordinate to the full texture width and height
-	int tex_x = abs((int)(interpolated_u * texture_width));
-	int tex_y = abs((int)(interpolated_v * texture_height));
+	int tex_x = abs((int)(interpolated_u * texture_width)) % texture_width;
+	int tex_y = abs((int)(interpolated_v * texture_height)) % texture_height;
 
-	uint32_t color = texture[(texture_width * tex_y) + tex_x];
 	draw_pixel(x, y, texture[(texture_width * tex_y) + tex_x]);
 }
 
@@ -414,6 +413,11 @@ void draw_textured_triangle(triangle_t* triangle, uint32_t* texture)
 		float_swap(&v0, &v1);
 	}
 
+	// flip the u component
+	v0 = 1.0f - v0;
+	v1 = 1.0f - v1;
+	v2 = 1.0f - v2;
+
 	vec4_t point_a = { x0, y0, z0, w0 };
 	vec4_t point_b = { x1, y1, z1, w1 };
 	vec4_t point_c = { x2, y2, z2, w2 };
@@ -431,10 +435,6 @@ void draw_textured_triangle(triangle_t* triangle, uint32_t* texture)
 
 	if (y1 - y0 != 0) inv_slope_1 = (float)(x1 - x0) / abs(y1 - y0);
 	if (y2 - y0 != 0) inv_slope_2 = (float)(x2 - x0) / abs(y2 - y0);
-
-	// Start x_start and x_end from the top vertex (x0, y0)
-	/*int x_start = x0;
-	int x_end = x0;*/
 
 	// Loop all the scanline from top to bottom
 	if (y1 - y0 != 0)

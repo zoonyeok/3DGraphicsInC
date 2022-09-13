@@ -44,11 +44,11 @@ void setup(void)
 	float zfar = 100.0f;
 	projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-	load_cube_mesh_data();
-	// load_obj_file_data("..\\assets\\cube.obj");
+	// load_cube_mesh_data();
+	load_obj_file_data("..\\assets\\f22.obj");
 
 	// load the texture information from an external PNG file
-	load_png_texture_data("..\\assets\\cube.png");
+	load_png_texture_data("..\\assets\\f22.png");
 	// mesh_texture = (uint32_t*)REDBRICK_TEXTURE;
 }
 
@@ -151,9 +151,9 @@ void update(void)
 	// Initialize the array of triangles to render
 	triangles_to_render = NULL;
 
-	//g_mesh2.rotation.x += 0.005f;
-	g_mesh2.rotation.y += 0.005f;
-	//g_mesh2.rotation.z += 0.0f;
+	g_mesh2.rotation.x += 0.005f;
+	//g_mesh2.rotation.y += 0.005f;
+	//g_mesh2.rotation.z += 0.005f;
 
 	//g_mesh2.scale.x += 0.002f;
 	//g_mesh2.scale.y += 0.002f;
@@ -178,9 +178,9 @@ void update(void)
 		face_t mesh_face = g_mesh2.faces[i];
 
 		vec3_t face_vertices[3];
-		face_vertices[0] = g_mesh2.vertices[mesh_face.a - 1];
-		face_vertices[1] = g_mesh2.vertices[mesh_face.b - 1];
-		face_vertices[2] = g_mesh2.vertices[mesh_face.c - 1];
+		face_vertices[0] = g_mesh2.vertices[mesh_face.a];
+		face_vertices[1] = g_mesh2.vertices[mesh_face.b];
+		face_vertices[2] = g_mesh2.vertices[mesh_face.c];
 
 		vec4_t transformed_vertices[3];
 
@@ -224,7 +224,7 @@ void update(void)
 			projected_points[j].x *= (window_width / 2.0f);
 			projected_points[j].y *= (window_height / 2.0f);
 
-			projected_points[j].y *= -1;
+			// projected_points[j].y *= -1;
 
 			// Translate the projected points to the middle of the screen
 			projected_points[j].x += (window_width / 2.0f);
@@ -304,9 +304,10 @@ void render(void)
 // Free the memory that was dynamically allocated by the program
 void free_resources(void)
 {
+	// free(color_buffer);
+	upng_free(png_texture);
 	array_free(g_mesh2.faces);
 	array_free(g_mesh2.vertices);
-	// free(color_buffer);
 }
 
 int main(void)

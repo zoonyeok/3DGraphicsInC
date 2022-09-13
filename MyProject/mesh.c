@@ -4,6 +4,7 @@
 #include "string.h"
 #include <stdlib.h>
 #include "color.h"
+#include "triangle.h"
 
 mesh_t g_mesh2 =
 {
@@ -78,12 +79,15 @@ void load_obj_file_data(char* filename)
 		exit(EXIT_FAILURE);
 	}
 
+	tex2_t* vt_buffer = NULL;
+	int vt_buffer_idx = 0;
 	while (fgets(buffer, sizeof(buffer), fr) != NULL)
 	{
 		char* context = NULL;
 		char first = buffer[0];
 		char second = buffer[1];
 		vec3_t v = { 0, 0, 0 };
+
 		if (first == 'v' && second == ' ')
 		{
 			float arr[3] = { 0.f, 0.f, 0.f };
@@ -92,8 +96,6 @@ void load_obj_file_data(char* filename)
 			while (ptr != NULL)
 			{
 				arr[cnt++] = (float)atof(ptr);
-
-				//printf(ptr);
 				ptr = strtok_s(NULL, " v", &context);
 			}
 
@@ -103,28 +105,55 @@ void load_obj_file_data(char* filename)
 			array_push(g_mesh2.vertices, v);
 		}
 
-		face_t f = { 0, 0, 0 };
-		if (first == 'f' && second == ' ')
+		tex2_t vt = { 0, 0 };
+		if (first == 'v' && second == 't')
 		{
-			int arr[3] = { 0,0,0 };
+			float arr[2] = { 0.f, 0.f };
 			int cnt = 0;
-			char* ptr = strtok_s(buffer, " f", &context);
+			char* ptr = strtok_s(buffer, " vt", &context);
 			while (ptr != NULL)
 			{
-				arr[cnt++] = atoi(ptr);
-				//printf(ptr);
-				ptr = strtok_s(NULL, " f", &context);
+				arr[cnt++] = (float)atof(ptr);
+				ptr = strtok_s(NULL, " vt", &context);
 			}
 
-			f.a = arr[0];
-			f.b = arr[1];
-			f.c = arr[2];
+			vt.u = arr[0]; 
+			vt.v = arr[1];
+			array_push(vt_buffer, vt);
+		}
+
+		face_t f = { 0, 0, 0 };
+		int vt_total_count = array_length(vt_buffer);
+
+		if (strncmp(buffer, "f ", 2) == 0)
+		{
+			int vertex_indices[3];
+			int texture_indices[3];
+			int normal_indices[3];
+			sscanf_s(
+				buffer, "f %d/%d/%d %d/%d/%d %d/%d/%d",
+				&vertex_indices[0], &texture_indices[0], &normal_indices[0],
+				&vertex_indices[1], &texture_indices[1], &normal_indices[1],
+				&vertex_indices[2], &texture_indices[2], &normal_indices[2]
+			);
+
+			f.a = vertex_indices[0] - 1;
+			f.b = vertex_indices[1] - 1;
+			f.c = vertex_indices[2] - 1;
+			if (vt_total_count != 0)
+			{
+				f.a_uv = vt_buffer[texture_indices[0] - 1];
+				f.b_uv = vt_buffer[texture_indices[1] - 1];
+				f.c_uv = vt_buffer[texture_indices[2] - 1];
+			}
 			f.color = White;
+
 			array_push(g_mesh2.faces, f);
 		}
 		count++;
 	}
 
+	array_free(vt_buffer);
 	fclose(fr);
 	// printf("FILE %s has %lu character\n", filename, count);
 }
@@ -167,6 +196,9 @@ void load_obj_file_data2(char* filename)
 				.a = vertex_indices[0],
 				.b = vertex_indices[1],
 				.c = vertex_indices[2],
+				/*.a_uv = ----,
+				.b_uv = 
+				.c_uv = */
 				.color = White,
 			};
 			array_push(g_mesh2.faces, face);
