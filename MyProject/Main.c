@@ -7,6 +7,7 @@
 #include "texture.h"
 #include "matrix.h"
 #include "light.h"
+#include "upng.h"
 
 triangle_t* triangles_to_render = NULL;
 
@@ -29,7 +30,8 @@ void setup(void)
 	// Creating a SDL texture that is used to display the color buffer
 	color_buffer_texture = SDL_CreateTexture(
 		renderer,
-		SDL_PIXELFORMAT_ARGB8888,
+		SDL_PIXELFORMAT_RGBA32,
+		// SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
 		window_width,
 		window_height
@@ -42,14 +44,12 @@ void setup(void)
 	float zfar = 100.0f;
 	projection_matrix = mat4_make_perspective(fov, aspect, znear, zfar);
 
-	// Manually load the hardcoded texture data from the static array
-	mesh_texture = (uint32_t*)REDBRICK_TEXTURE;
-	texture_width = 64;
-	texture_height = 64;
-
 	load_cube_mesh_data();
-	//load_obj_file_data("f22.obj"); // ./assets/cube.obj
-	//vec3_normalize(&g_light.direction);
+	// load_obj_file_data("..\\assets\\cube.obj");
+
+	// load the texture information from an external PNG file
+	load_png_texture_data("..\\assets\\cube.png");
+	// mesh_texture = (uint32_t*)REDBRICK_TEXTURE;
 }
 
 void process_input(void)
@@ -279,7 +279,7 @@ void render(void)
 		// Draw textured triangle 
 		if (render_method == RENDER_TEXTURED || render_method == RENDER_TEXTURED_WIRE)
 		{
-			draw_textured_triangle(&triangle, mesh_texture);
+			draw_textured_triangle(&triangle, mesh_texture); // mesh_texture
 		}
 
 		if (render_method == RENDER_WIRE || render_method == RENDER_WIRE_VERTEX 

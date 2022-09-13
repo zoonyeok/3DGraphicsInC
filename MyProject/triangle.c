@@ -213,6 +213,7 @@ void draw_texel(int x, int y, uint32_t* texture, vec4_t point_a, vec4_t point_b,
 	int tex_x = abs((int)(interpolated_u * texture_width));
 	int tex_y = abs((int)(interpolated_v * texture_height));
 
+	uint32_t color = texture[(texture_width * tex_y) + tex_x];
 	draw_pixel(x, y, texture[(texture_width * tex_y) + tex_x]);
 }
 
@@ -432,8 +433,8 @@ void draw_textured_triangle(triangle_t* triangle, uint32_t* texture)
 	if (y2 - y0 != 0) inv_slope_2 = (float)(x2 - x0) / abs(y2 - y0);
 
 	// Start x_start and x_end from the top vertex (x0, y0)
-	float x_start = x0;
-	float x_end = x0;
+	/*int x_start = x0;
+	int x_end = x0;*/
 
 	// Loop all the scanline from top to bottom
 	if (y1 - y0 != 0)
