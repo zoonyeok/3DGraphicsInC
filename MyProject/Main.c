@@ -23,6 +23,7 @@ mat4_t world_matrix;
 uint32_t vertex_color = Yellow;
 bool is_running = false;
 uint32_t previous_frame_time = 0;
+float delta_time = 0;
 
 void setup(void)
 {
@@ -60,6 +61,35 @@ void process_input(void)
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
+	uint8_t* keystate = SDL_GetKeyboardState(NULL);
+	// up: move up
+	if (keystate[SDL_SCANCODE_UP]) {
+		g_camera.position.y += 3.0 * delta_time;
+	}
+	// down: move down
+	if (keystate[SDL_SCANCODE_DOWN]) {
+		g_camera.position.y -= 3.0 * delta_time;
+	}
+	// A: rotate left
+	if (keystate[SDL_SCANCODE_A]) {
+		g_camera.yaw_angle -= 1.0 * delta_time;
+	}
+	// D: rotate right
+	if (keystate[SDL_SCANCODE_D]) {
+		g_camera.yaw_angle += 1.0 * delta_time;
+	}
+	// W :
+	if (keystate[SDL_SCANCODE_W])
+	{
+		g_camera.forward_velocity = vec3_mul(g_camera.direction, 5.0f * delta_time);
+		g_camera.position = vec3_add(g_camera.position, g_camera.forward_velocity);
+	}
+	// S : 
+	if (keystate[SDL_SCANCODE_S])
+	{
+		g_camera.forward_velocity = vec3_mul(g_camera.direction, 5.0f * delta_time);
+		g_camera.position = vec3_sub(g_camera.position, g_camera.forward_velocity);
+	}
 
 	switch (event.type)
 	{
@@ -86,7 +116,7 @@ void process_input(void)
 			render_method = RENDER_TEXTURED_WIRE;
 		if (event.key.keysym.sym == SDLK_c)
 			cull_method = CULL_BACKFACE;
-		if (event.key.keysym.sym == SDLK_d)
+		if (event.key.keysym.sym == SDLK_v)
 			cull_method = CULL_NONE;
 		break;
 	}
@@ -101,31 +131,40 @@ void update(void)
 	{
 		SDL_Delay(time_to_wait);
 	}
+
+	// Get a delta time factor converted to seconds to be used to update our game objects
+	delta_time = (SDL_GetTicks() - previous_frame_time) / 1000.0f;
+
 	previous_frame_time = SDL_GetTicks();
 
 	// Initialize the counter of triangles to render for the current frame
 	num_triangles_to_render = 0;
 
 	// Change the mesh scale, rotation, and translation values per animation frame
-	g_mesh2.rotation.x += 0.006;
-	g_mesh2.rotation.y += 0.000;
-	g_mesh2.rotation.z += 0.000;
+	g_mesh2.rotation.x += 0.0 * delta_time;
+	g_mesh2.rotation.y += 0.0 * delta_time;
+	g_mesh2.rotation.z += 0.0 * delta_time;
 	g_mesh2.translation.z = 4.0;
 
-	// Change the camera position per animation frame
-	g_camera.position.x += 0.008;
-	g_camera.position.y += 0.008;
+	// Create the view matrix looking at a hardcoded target point
+	// TODO : compute the new camera rotation and translation fo the FPS camera movment
+	vec3_t up_direction = { 0, 1, 0 };
+	
+	// Initialize the target looking at the positive z-axis
+	vec3_t target = { 0, 0, 1 };
+	mat4_t camera_yaw_rotation = mat4_make_rotation_y(g_camera.yaw_angle);
+	g_camera.direction = vec3_from_vec4(mat4_mul_vec4(camera_yaw_rotation, vec4_from_vec3(target)));
+
+	// Offset the camera position in the direction where the camera is pointing at
+	target = vec3_add(g_camera.position, g_camera.direction);
+
+	view_matrix = mat4_look_at(g_camera.position, target, up_direction);
 
 	mat4_t scale_matrix = mat4_make_scale(g_mesh2.scale.x, g_mesh2.scale.y, g_mesh2.scale.z);
 	mat4_t translation_matrix = mat4_make_translation(g_mesh2.translation.x, g_mesh2.translation.y, g_mesh2.translation.z);
 	mat4_t rotation_matrix_x = mat4_make_rotation_x(g_mesh2.rotation.x);
 	mat4_t rotation_matrix_y = mat4_make_rotation_y(g_mesh2.rotation.y);
 	mat4_t rotation_matrix_z = mat4_make_rotation_z(g_mesh2.rotation.z);
-	
-	// Create the view matrix looking at a hardcoded taget point
-	vec3_t target = { 0.0f, 0.0f, 4.0f };
-	vec3_t up_direction = { 0.0f, 1.0f, 0.0f };
-	view_matrix = mat4_look_at(g_camera.position, target, up_direction);
 
 	int num_faces = array_length(g_mesh2.faces);
 	// 모든 triangle face 순회

@@ -57,8 +57,8 @@ float vec2_dot(vec2_t a, vec2_t b)
 void vec2_normalize(vec2_t* v)
 {
 	float length = sqrt(v->x * v->x + v->y * v->y);
-	v->x / length;
-	v->y / length;
+	v->x /= length;
+	v->y /= length;
 }
 
 /****************************
