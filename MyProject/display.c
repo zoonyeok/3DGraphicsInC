@@ -1,8 +1,10 @@
 #include "display.h"
+#include <string.h>
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 uint32_t* color_buffer = NULL;
+float* z_buffer = NULL;
 SDL_Texture* color_buffer_texture = NULL;
 int window_width = 800;
 int window_height = 600;
@@ -126,11 +128,26 @@ void clear_color_buffer(uint32_t color)
 			color_buffer[(window_width * y) + x] = color;
 		}
 	}
+
+	// memset(color_buffer, color, sizeof(color_buffer));
+}
+
+void clear_z_buffer()
+{
+	for (int y = 0; y < window_height; y++)
+	{
+		for (int x = 0; x < window_width; x++)
+		{
+			z_buffer[(window_width * y) + x] = 1.0f;
+		}
+	}
+
+	//memset(z_buffer, NULL, sizeof(z_buffer));
 }
 
 void destroy_window(void) 
 {
-	free(color_buffer);
+	// free(color_buffer); double free
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

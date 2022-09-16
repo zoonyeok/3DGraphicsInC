@@ -108,17 +108,17 @@ void load_obj_file_data(char* filename)
 		tex2_t vt = { 0, 0 };
 		if (first == 'v' && second == 't')
 		{
-			float arr[2] = { 0.f, 0.f };
+			float vtArr[3] = { 0.0f, 0.0f, 0.0f };
 			int cnt = 0;
 			char* ptr = strtok_s(buffer, " vt", &context);
 			while (ptr != NULL)
 			{
-				arr[cnt++] = (float)atof(ptr);
+				vtArr[cnt++] = (float)atof(ptr);
 				ptr = strtok_s(NULL, " vt", &context);
 			}
 
-			vt.u = arr[0]; 
-			vt.v = arr[1];
+			vt.u = vtArr[0];
+			vt.v = vtArr[1];
 			array_push(vt_buffer, vt);
 		}
 
@@ -158,50 +158,49 @@ void load_obj_file_data(char* filename)
 	// printf("FILE %s has %lu character\n", filename, count);
 }
 
-void load_obj_file_data2(char* filename)
-{
-	FILE* file = NULL;
-	fopen_s(&file, filename, "r");
-	if (file == NULL)
-	{
-		printf("Can't open %s\n", filename);
-		exit(EXIT_FAILURE);
-	}
-
+void load_obj_file_data2(char* filename) {
+	FILE* file;
+	file = fopen(filename, "r");
 	char line[1024];
-	while (fgets(line, sizeof(line), file))
-	{
+
+	tex2_t* texcoords = NULL;
+
+	while (fgets(line, 1024, file)) {
 		// Vertex information
-		if (strncmp(line, "v ", 2) == 0)
-		{
+		if (strncmp(line, "v ", 2) == 0) {
 			vec3_t vertex;
-			sscanf_s(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
+			sscanf(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
 			array_push(g_mesh2.vertices, vertex);
 		}
-
-		// Face Information
-		if (strncmp(line, "f ", 2) == 0)
-		{
+		// Texture coordinate information
+		if (strncmp(line, "vt ", 3) == 0) {
+			tex2_t texcoord;
+			sscanf(line, "vt %f %f", &texcoord.u, &texcoord.v);
+			array_push(texcoords, texcoord);
+		}
+		// Face information
+		if (strncmp(line, "f ", 2) == 0) {
 			int vertex_indices[3];
 			int texture_indices[3];
 			int normal_indices[3];
-			sscanf_s(
+			sscanf(
 				line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
 				&vertex_indices[0], &texture_indices[0], &normal_indices[0],
 				&vertex_indices[1], &texture_indices[1], &normal_indices[1],
 				&vertex_indices[2], &texture_indices[2], &normal_indices[2]
 			);
-			face_t face =
-			{
+			face_t face = {
 				.a = vertex_indices[0],
 				.b = vertex_indices[1],
 				.c = vertex_indices[2],
-				/*.a_uv = ----,
-				.b_uv = 
-				.c_uv = */
-				.color = White,
+				.a_uv = texcoords[texture_indices[0] - 1],
+				.b_uv = texcoords[texture_indices[1] - 1],
+				.c_uv = texcoords[texture_indices[2] - 1],
+				.color = 0xFFFFFFFF
 			};
 			array_push(g_mesh2.faces, face);
 		}
 	}
+	array_free(texcoords);
+	fclose(file);
 }

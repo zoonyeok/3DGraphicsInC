@@ -1,6 +1,6 @@
 #include "vector.h"
 #include <math.h>
-
+//
 /****************************
 *  Vector2 Functions
 ****************************/
@@ -13,7 +13,7 @@ vec2_t vec2_add(vec2_t a, vec2_t b)
 {
 	vec2_t result = 
 	{ 
-		.x = a.x + b.x , 
+		.x = a.x + b.x, 
 		.y = a.y + b.y 
 	};
 	return result;
@@ -23,7 +23,7 @@ vec2_t vec2_sub(vec2_t a, vec2_t b)
 {
 	vec2_t result = 
 	{
-		.x = a.x - b.x ,
+		.x = a.x - b.x,
 		.y = a.y - b.y
 	};
 	return result;
@@ -56,7 +56,7 @@ float vec2_dot(vec2_t a, vec2_t b)
 
 void vec2_normalize(vec2_t* v)
 {
-	float length = vec2_length(*v);
+	float length = sqrt(v->x * v->x + v->y * v->y);
 	v->x / length;
 	v->y / length;
 }
@@ -64,14 +64,15 @@ void vec2_normalize(vec2_t* v)
 /****************************
 *  Vector3 Functions
 ****************************/
-float vec3_length(vec3_t* v)
+float vec3_length(vec3_t v) 
 {
-	return sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
 vec3_t vec3_add(vec3_t a, vec3_t b) 
 {
-	vec3_t result = {
+	vec3_t result = 
+	{
 		.x = a.x + b.x,
 		.y = a.y + b.y,
 		.z = a.z + b.z
@@ -81,7 +82,8 @@ vec3_t vec3_add(vec3_t a, vec3_t b)
 
 vec3_t vec3_sub(vec3_t a, vec3_t b) 
 {
-	vec3_t result = {
+	vec3_t result = 
+	{
 		.x = a.x - b.x,
 		.y = a.y - b.y,
 		.z = a.z - b.z
@@ -134,11 +136,10 @@ float vec3_dot(vec3_t a, vec3_t b)
 
 void vec3_normalize(vec3_t* v)
 {
-	float length = vec3_length(v);
-	//float length = vec3_dot(*v,*v);
-	v->x / length;
-	v->y / length;
-	v->z / length;
+	float length = sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+	v->x /= length;
+	v->y /= length;
+	v->z /= length;
 }
 
 vec3_t vec3_rotate_x(vec3_t v, float angle)
@@ -156,9 +157,9 @@ vec3_t vec3_rotate_y(vec3_t v, float angle)
 {
 	vec3_t rotated_vector =
 	{
-		.x = v.x * cos(angle) - v.z * sin(angle),
+		.x = v.x * cos(angle) + v.z * sin(angle),
 		.y = v.y,
-		.z = v.x * sin(angle) + v.z * cos(angle)
+		.z = -v.x * sin(angle) + v.z * cos(angle)
 	};
 	return rotated_vector;
 }
@@ -178,8 +179,8 @@ vec2_t vec2_from_vec4(vec4_t v)
 {
 	vec2_t result =
 	{
-		.x = v.x,
-		.y = v.y
+		v.x,
+		v.y
 	};
 	return result;
 }
@@ -188,9 +189,9 @@ vec3_t vec3_from_vec4(vec4_t v)
 {
 	vec3_t result =
 	{
-		.x = v.x,
-		.y = v.y,
-		.z = v.z
+		v.x,
+		v.y,
+		v.z
 	};
 	return result;
 }
@@ -202,10 +203,10 @@ vec4_t vec4_from_vec3(vec3_t v)
 {
 	vec4_t result =
 	{
-		.x = v.x,
-		.y = v.y,
-		.z = v.z,
-		.w = 1.0f
+		v.x,
+		v.y,
+		v.z,
+		1.0f
 	};
 	return result;
 }
