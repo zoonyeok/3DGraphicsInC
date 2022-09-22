@@ -1,6 +1,6 @@
+출처 : https://pikuma.com/courses/learn-3d-computer-graphics-programming
+
 # 3D Graphics 
-
-
 
 메모리 / 디스플레이 / 그래픽스
 
@@ -105,8 +105,6 @@ typedef struct {
 You'll see that perspective projection is different because we want points that are closer to appear bigger and points that are far away to appear smaller. For that we divide both x and y by the z component.
 
 ### perspective divide
-
-
 
 - Coordinate system
   - left
@@ -308,7 +306,7 @@ But don’t worry. As we start using the dot product more and more I promise tha
 2. Take their cross product and find the perpendicular normal N
 3. Find the camera ray vector by substracting the camera position from point A ( camera - A)
 
-<img src="C:\Users\junhy\Desktop\cullingAlgorithm.png" style="zoom: 67%;" /> 
+![cullingAlgorithm](pngfiles/cullingAlgorithm.png) 
 
 4. Take the Dot product between the normal and the camera ray
 5. if this dot product is less than zero, then do not display the face
@@ -364,7 +362,9 @@ find division point (Mx, My)
 
 first goal is find the Mx, My
 
-<img src="C:\Users\junhy\Desktop\flattopTechnique.png" style="zoom:50%;" /> 
+<img src="pngfiles/flattopTechnique.png" alt="flattopTechnique" style="zoom:50%;" /> 
+
+ 
 
 ```c
 // draw flat bottom filled triangle
@@ -378,7 +378,7 @@ draw_flat_top(x1, y1, Mx, My, x2, y2);
 
 ## 삼각형 닮음으로 좌표찾기
 
-![](C:\Users\junhy\Desktop\trianglesimiliar.png) 
+![](pngfiles/trianglesimiliar.png) 
 
 
 $$
@@ -392,13 +392,13 @@ $$
 
 ## flat-bottom triangle algorithm
 
-<img src="C:\Users\junhy\Desktop\flat_bottom_triangle.png" style="zoom:50%;" /> 
+<img src="pngfiles/flat_bottom_triangle.png" alt="flat_bottom_triangle" style="zoom:50%;" /> 
 
 
 
 ### Inverse of slope
 
-<img src="C:\Users\junhy\Desktop\inverseofdelta.png" style="zoom:50%;" /> 
+ <img src="pngfiles/inverseofdelta.png" alt="inverseofdelta" style="zoom:50%;" />
 
 x의 변화량을 구하므로 dy가 분모가 되도록 기울기의 역을 구해야 함 
 
@@ -408,7 +408,7 @@ x의 변화량을 구하므로 dy가 분모가 되도록 기울기의 역을 구
 
 ### 결과
 
-<img src="C:\Users\junhy\Desktop\triangleResult.png" style="zoom:50%;" /> 
+ <img src="pngfiles/triangleResult.png" alt="triangleResult" style="zoom:50%;" />
 
 결과를 메시 삼각형 그리기에 적용하여 색 채워주기 가능
 
@@ -478,7 +478,7 @@ So, I just wanted to mention this fun fact here because I think it links well wi
 
 무엇을 그릴 때 뒷바탕을 먼저 그리고 점점 위에 그림을 그려감 (back to front)
 
-<img src="C:\Users\junhy\Desktop\depthZ.png" style="zoom:50%;" /> 
+ <img src="pngfiles/depthZ.png" alt="depthZ" style="zoom:50%;" />
 
 depth of face , z of face
 
@@ -1020,3 +1020,535 @@ You don't have to do this now, but you should reserve some time after you comple
 
 # Decoding PNG Files
 
+library 가져다 씀
+
+
+
+# Textured OBJ files
+
+obj file + png file (Texture)
+
+obj file의 각 vertice에서 uv 정보가 아직 없음
+
+obj file에서 vertex의 uv 정보 파싱
+
+
+
+## Fixing Texture Buffer overflow & Raster fill Convention
+
+- fill Convention is also known as Triangle Rasterization Rules
+- GPU do this job
+
+
+
+
+
+# Z - Buffer
+
+- depth buffer
+- Stores the depth of each screen pixel in an array
+- Helps determine what pixel is in front  (should be displayed)
+- An alternative to painter's algorithm
+
+
+
+1. scene에서 픽셀마다 depth 값을 저장한다면 보간된 z값을 저장해야되나요?
+   - No 
+2. 만약 z값이 삼각형 면에서 비선형이라면 각각의 픽셀의 depth 값을 어떻게 저장할수 있나요?
+   - depth 값의 역으로 저장 (w 값의 역)
+
+
+
+## Z-buffer (wiki)
+
+To implement a z-buffer, the old values of z in camera space, or w, are stored in the buffer, generally in [floating point](https://en.wikipedia.org/wiki/Floating_point) format. However, these values cannot be linearly interpolated across screen space from the vertices—they usually have to be [inverted](https://en.wikipedia.org/wiki/Multiplicative_inverse), interpolated, and then inverted again. The resulting values of w, as opposed to z', are spaced evenly between near and far. There are implementations of the w-buffer that avoid the inversions altogether.
+
+Whether a z-buffer or w-buffer results in a better image depends on the application.
+
+
+
+## CODE
+
+```c
+// Adjust 1/w so the pixels that are closer to the camera have smaller values
+interpolated_reciprocal_w = 1.0 - interpolated_reciprocal_w;
+
+// Only draw the pixel if the depth value if less than the one previously stored in the z-buffer
+if (z_buffer[(window_width * y) + x] > interpolated_reciprocal_w)
+{
+     draw_pixel(x, y, texture[(texture_width * tex_y) + tex_x]);
+
+     // Update the z-buffer value with the 1/w of this current pixel
+     z_buffer[(window_width * y) + x] = interpolated_reciprocal_w;
+}
+```
+
+- 
+
+
+
+
+
+# Camera
+
+
+
+## Summary of transformation of 3D game engine
+
+- Local space
+- World space
+  - multiply by world matrix
+- Camera/View space
+  - multiply by view matrix
+- Screen Space
+  - multiply by projection matrix
+
+
+
+## Camera Model
+
+- Look-at camera model
+  - we are gonna implement this 
+  - look at certain target
+- FPS camera model
+
+
+
+## Look-At Camera Model
+
+- the most popular way of creating a view matrix is using a camera look_at() function
+- this function returns a 4X4 matrix that can be used to multiply the vertices to convert them vo view/camera space.
+- 카메라의 위치와 방향을 설정하기 위해서는 공간에서 카메라의 위치를 설정하는 포인트(eye 포인트)와 카메라가 바라보는 위치를 정의하는 포인트(target 포인트)만 있으면 됩니다.
+
+
+
+## The Look_At Transformation
+
+1. 이동 , translation
+   - 카메라의 위치로 이동
+2. 회전 , rotation
+   - 카메라 방향으로 회전
+
+
+
+
+
+# Clipping
+
+- The Goal of clipping is to remove objects or line segments that are outside the viewing volume.
+- 3D clipping is a set of method to clip polygons against planes
+- The Graphis pipeline performs several clipping steps (1 per plane)
+
+- For frustum clipping, we need to clip against six planes
+  - top
+  - bottom
+  - left
+  - right
+  - near
+  - far
+- The resulting polygon that is produced as the output of one clipping stage is used as an input for the next stage
+- 계산기하
+  - 점과 평면과의 관계
+  - 선분과 평면
+  - 폴리곤과 평면
+
+## Plane
+
+- A plane is be defined by :
+  - a point P, and a normal vector n
+
+
+
+### Right frustum plane
+
+Question
+
+- What point could we pick to define the right frustum plane?
+
+- what are x,y, and z components of the plane normal vector
+
+  
+  
+  ![Right frustum plane](pngfiles/Right frustum plane.png) 
+
+
+
+### CODE
+
+```c
+///////////////////////////////////////////////////////////////////////////////
+// Frustum planes are defined by a point and a normal vector
+///////////////////////////////////////////////////////////////////////////////
+// Near plane   :  P=(0, 0, znear), N=(0, 0,  1)
+// Far plane    :  P=(0, 0, zfar),  N=(0, 0, -1)
+// Top plane    :  P=(0, 0, 0),     N=(0, -cos(fov/2), sin(fov/2))
+// Bottom plane :  P=(0, 0, 0),     N=(0, cos(fov/2), sin(fov/2))
+// Left plane   :  P=(0, 0, 0),     N=(cos(fov/2), 0, sin(fov/2))
+// Right plane  :  P=(0, 0, 0),     N=(-cos(fov/2), 0, sin(fov/2))
+///////////////////////////////////////////////////////////////////////////////
+//
+//           /|\
+//         /  | | 
+//       /\   | |
+//     /      | |
+//  P*|-->  <-|*|   ----> +z-axis
+//     \      | |
+//       \/   | |
+//         \  | | 
+//           \|/
+//
+///////////////////////////////////////////////////////////////////////////////
+void init_frustum_planes(float fov, float z_near, float z_far) 
+{
+	float cos_half_fov = cos(fov / 2);
+	float sin_half_fov = sin(fov / 2);
+
+	frustum_planes[LEFT_FRUSTUM_PLANE].point = vec3_new(0, 0, 0);
+	frustum_planes[LEFT_FRUSTUM_PLANE].normal.x = cos_half_fov;
+	frustum_planes[LEFT_FRUSTUM_PLANE].normal.y = 0;
+	frustum_planes[LEFT_FRUSTUM_PLANE].normal.z = sin_half_fov;
+
+	frustum_planes[RIGHT_FRUSTUM_PLANE].point = vec3_new(0, 0, 0);
+	frustum_planes[RIGHT_FRUSTUM_PLANE].normal.x = -cos_half_fov;
+	frustum_planes[RIGHT_FRUSTUM_PLANE].normal.y = 0;
+	frustum_planes[RIGHT_FRUSTUM_PLANE].normal.z = sin_half_fov;
+
+	frustum_planes[TOP_FRUSTUM_PLANE].point = vec3_new(0, 0, 0);
+	frustum_planes[TOP_FRUSTUM_PLANE].normal.x = 0;
+	frustum_planes[TOP_FRUSTUM_PLANE].normal.y = -cos_half_fov;
+	frustum_planes[TOP_FRUSTUM_PLANE].normal.z = sin_half_fov;
+
+	frustum_planes[BOTTOM_FRUSTUM_PLANE].point = vec3_new(0, 0, 0);
+	frustum_planes[BOTTOM_FRUSTUM_PLANE].normal.x = 0;
+	frustum_planes[BOTTOM_FRUSTUM_PLANE].normal.y = cos_half_fov;
+	frustum_planes[BOTTOM_FRUSTUM_PLANE].normal.z = sin_half_fov;
+
+	frustum_planes[NEAR_FRUSTUM_PLANE].point = vec3_new(0, 0, z_near);
+	frustum_planes[NEAR_FRUSTUM_PLANE].normal.x = 0;
+	frustum_planes[NEAR_FRUSTUM_PLANE].normal.y = 0;
+	frustum_planes[NEAR_FRUSTUM_PLANE].normal.z = 1;
+
+	frustum_planes[FAR_FRUSTUM_PLANE].point = vec3_new(0, 0, z_far);
+	frustum_planes[FAR_FRUSTUM_PLANE].normal.x = 0;
+	frustum_planes[FAR_FRUSTUM_PLANE].normal.y = 0;
+	frustum_planes[FAR_FRUSTUM_PLANE].normal.z = -1;
+}
+```
+
+
+
+## Defining Points inside and outside planes
+
+- 평면은 3차원 공간을 2면으로 나눈다
+  - 위 : inside
+  - 아래 : outside
+- 어떤 점 Q가 평면 위( On ) 에 있으려면?
+  - Q와 평면 위의 점 p의 선분이 p의 노멀벡터와 내적하여 값이 0이 되면 true
+- 어떤 점 Q가 평면 안( inside ) 에 있으려면?
+  - Q와 평면 위의 점 p의 선분이 p의 노멀벡터와 내적하여 값이 0보다 크면 true
+- 어떤 점 Q가 평면 아래( outside) 에 있으려면?
+  - Q와 평면 위의 점 p의 선분이 p의 노멀벡터와 내적하여 값이 0보다 작으면 true
+
+![pointAndPlane](pngfiles/pointAndPlane.png) 
+
+
+
+## Intersection Between Line and Plane
+
+- 폴리곤의 꼭지점들과 평면의 교차점
+
+  ![verticesAndPlane](pngfiles/verticesAndPlane.png) 
+
+- 평면과 삼각형위의 선분의 교차점을 찾자
+- 선형보간을 이용
+
+
+
+ ![findTfactor](pngfiles/findTfactor.png) 
+
+
+$$
+t = \frac{\vec{n} \cdot (Q_1 - P)}{ \vec{n} \cdot (Q_1 - P) - \vec{n} \cdot (Q_2 - P)} \\
+t = \frac{dot_{Q1}}{dot_{Q1} - dot_{Q2}}
+$$
+
+
+- t를 구하면 충돌점을 구할 수 있다
+  - point = origin + t * direction
+  - point = Q1 + t ( Q2 - Q1 )
+
+
+
+## Clipping a polygon Against a plane
+
+![clippingPolygon](pngfiles/clippingPolygon.png) 
+
+### code 
+
+```c
+void clip_polygon_against_plane(polygon_t* polygon, int plane) 
+{
+    vec3_t plane_point = frustum_planes[plane].point;
+    vec3_t plane_normal = frustum_planes[plane].normal;
+
+    // Declare a static array of inside vertices that will be part of the final polygon returned via parameter
+    vec3_t inside_vertices[MAX_NUM_POLY_VERTICES];
+    int num_inside_vertices = 0;
+
+    // Start the current vertex with the first polygon vertex, and the previous with the last polygon vertex
+    vec3_t* current_vertex = &polygon->vertices[0];
+    vec3_t* previous_vertex = &polygon->vertices[polygon->num_vertices - 1];
+
+    // Calculate the dot product of the current and previous vertex
+    float current_dot = 0; 
+    float previous_dot = vec3_dot(vec3_sub(*previous_vertex, plane_point), plane_normal);
+
+    // Loop all the polygon vertices while the current is different than the last one
+    while (current_vertex != &polygon->vertices[polygon->num_vertices]) {
+        current_dot = vec3_dot(vec3_sub(*current_vertex, plane_point), plane_normal);
+
+        // If we changed from inside to outside or from outside to inside
+        if (current_dot * previous_dot < 0) {
+            // Find the interpolation factor t
+            float t = previous_dot / (previous_dot - current_dot);
+            // Calculate the intersection point I = Q1 + t(Q2-Q1)
+            vec3_t intersection_point = vec3_clone(current_vertex);              // I =        Qc
+            intersection_point = vec3_sub(intersection_point, *previous_vertex); // I =       (Qc-Qp)
+            intersection_point = vec3_mul(intersection_point, t);                // I =      t(Qc-Qp)
+            intersection_point = vec3_add(intersection_point, *previous_vertex); // I = Qp + t(Qc-Qp)
+
+            // Insert the intersection point to the list of "inside vertices"
+            inside_vertices[num_inside_vertices] = vec3_clone(&intersection_point);
+            num_inside_vertices++;
+        }
+
+        // Current vertex is inside the plane
+        if (current_dot > 0) {
+            // Insert the current vertex to the list of "inside vertices"
+            inside_vertices[num_inside_vertices] = vec3_clone(current_vertex);
+            num_inside_vertices++;
+        }
+
+        // Move to the next vertex
+        previous_dot = current_dot;
+        previous_vertex = current_vertex;
+        current_vertex++;
+    }
+    
+    // At the end, copy the list of inside vertices into the destination polygon (out parameter)
+    for (int i = 0; i < num_inside_vertices; i++) {
+        polygon->vertices[i] = vec3_clone(&inside_vertices[i]);
+    }
+    polygon->num_vertices = num_inside_vertices;
+}
+```
+
+
+
+## Converting Polygon Back into Triangles
+
+
+
+## Horizontal & Vertical FOV angles
+
+Horizontal FOV 추가
+
+https://en.wikipedia.org/wiki/Field_of_view_in_video_games
+
+```c
+float aspecty = (float)window_height / (float)window_width;
+float aspectx = (float)window_width / (float)window_height;
+float fovy = M_PI / 3.0f; // 180/3 or 60deg or M_PI
+float fovx = atan(tan(fovy / 2) * aspectx) * 2;
+```
+
+
+
+## Clipping Texture UV Coordinate
+
+- clip_polygon_against_plane()함수에 UV coordinate 추가
+- main의 triangle_to_render의 texcoords에 triangle_after_clipping.texcoords 대입
+
+
+
+## Clipping Space
+
+
+
+- this program Rendering Pipeline
+
+- easy to understand version
+
+  - Model space
+  - World space
+  - Camera/View space
+  - Backface culling
+  - `Frustum Clipping`
+  - Projection
+    - perspective divide
+  - Image space (NDC)
+  - Sreen space
+
+  
+
+- Modern Rendering Pipeline
+
+  - Model space
+  - World space
+  - Camera/View space
+  - Backface culling
+  - Projection
+  - `Clipping space`
+  - perspective divide
+  - Image space (NDC)
+  - Sreen space
+
+
+
+- most renderes will perform clipping after projection and before perspective divide.
+
+- why ?
+
+  - Clipping Space
+
+    - Frustum culling
+
+      - The perspective divide is where we divide every x, y, and z by w.
+
+      - Therefore, a space just before perspective divide has every vertex with x,y, and z tha is inside the frustum between 
+
+        -1 * w and +1 * w.
+
+      - So, to perform frustum culling, most renderers can simply compare each component against w.
+    
+    - Frustum clipping 
+    
+      - Texture  coordinates can still be interpolated linearly in this space. ( since perpective division did not happen yet)
+      - Division by zero is avoided, since we are culling and clipping against znear.
+
+
+
+
+- projection후에는  Homogeneous 4d coordinate로 바뀜 (x, y, z, w)
+- 4차원을 피하기 위해 Projection 전에 clipping을 구현했음
+- 3차원이 이해하기 더 쉬움
+
+
+
+- projection후 clipping을 Homogeneous clipping이라고 함
+- Homogeneous clipping is how most modern software renderers work..
+
+
+
+
+
+# Code Polishing & Refactoring
+
+
+
+
+
+
+
+# Multiple Meshes
+
+62
+
+# Conclusion and Next step
+
+
+
+## Handedness and Orientation
+
+
+
+### Cross product Direction and system handedness
+
+- 외적은 교환법칙이 성립하지 않음으로 왼손 / 오른손 결과가 다름
+- 좌표계에 따라 외적의 결과를 다르게 만듦
+
+
+
+- The direction of our normal vector depends on two important things:
+  - The triangle face winding order (clockwise / counterclockwise)
+  - The handedness of our coordinate system (left - handed / right-handed) 
+    - our Engine is LeftHanded system
+
+
+
+![coorHandedsystem](pngfiles/coorHandedsystem.png ) 
+
+
+
+## Dedicated Graphics Cards
+
+https://www.youtube.com/watch?v=ZdITviTD3VM
+
+- CPU
+  - Limited number of cores
+  - 각 코어는 복잡한 연산 가능
+  - 코어는 전용(dedicated)이며 빠릅니다.
+  - Good for computing single fast tasks
+  - Optimized for serial tasks
+
+- GPU
+  - Tens/ thousands of cores
+  - Dumb cores
+  - Cores are limited in processing power
+  - Good for multiple simple parallel tasks
+  - Optimized for many paralle tasks
+
+
+
+## Modern Graphics APIs & Shaders
+
+- OpenGL
+- Vulkan
+- DirectX
+
+
+
+Graphics pipeline
+
+- Application
+- Geometry -  vertex shader
+- Rasterization - pixel shader
+- Screen
+
+
+
+Programmable Pipeline (Shader)
+
+- vertex shader
+  - A script responsible for manipulating vertices
+    - Scale (per vertex)
+    - Rotation
+    - Translation
+- pixel(fragment) shader
+  - A script responsible for manipulating pixels
+    - light effect (per pixel)
+    - solid color
+    - Texture
+
+
+
+
+
+# 버그 수정
+
+1. vector.c 오타
+
+```c++
+void vec3_normalize(vec3_t* v)
+{
+      float length = sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
+      v->x /= length;
+      v->y /= length;
+      v->z /= length;
+}
+```
+
+- =을 빼먹어서 잘못된 계산이 누적되어 픽셀 찍을 때 함수 draw_triangle_pixel or draw_triangle_texel의 z_buffer버퍼에서 런타임 에러
+
+2. double free 
+destroy_window, free_resources에서 color_buffer버퍼를 두 번 해제

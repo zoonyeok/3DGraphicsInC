@@ -1,18 +1,95 @@
 ﻿  Main.c
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(47,1): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(67,30): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(71,30): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(75,29): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(79,29): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(64,1): warning C4090: '초기화 중': 'const' 한정자가 서로 다릅니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(163,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(164,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(165,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(306,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(306,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(307,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(307,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(308,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(308,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(330,1): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(50,1): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(51,48): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(73,30): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(77,30): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(81,29): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(85,29): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(70,1): warning C4090: '초기화 중': 'const' 한정자가 서로 다릅니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(150,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(151,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(152,28): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(321,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(321,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(322,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(322,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(323,35): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(323,61): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\Main.c(345,1): warning C4026: 정식 매개 변수 목록을 사용하여 함수를 선언했습니다.
+  display.c
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\display.c(106,14): warning C4244: '함수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\display.c(106,32): warning C4244: '함수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\display.c(101,20): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\display.c(102,20): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  triangle.c
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(49,32): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(49,55): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(50,27): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(50,54): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(52,31): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(52,54): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(53,22): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(53,45): warning C4244: '함수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(130,37): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(114,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(114,21): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(184,37): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(151,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(151,21): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(250,14): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(251,14): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(252,14): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(255,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(255,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(256,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(256,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(257,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(257,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(273,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(274,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(298,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(299,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(363,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(363,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(364,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(364,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(365,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(365,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(378,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(379,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(403,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(404,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(444,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(444,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(445,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(445,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(446,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(446,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(475,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(475,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(476,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(476,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(477,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(477,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(495,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(496,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(524,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(525,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(560,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(560,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(561,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(561,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(562,33): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(562,65): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(605,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(605,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(606,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(606,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(607,24): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(607,28): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(628,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(629,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(657,30): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\MyProject\triangle.c(658,28): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
   MyProject.vcxproj -> C:\Users\junhy\Desktop\GraphicsInC\SDL3DGraphics\Debug\MyProject.exe

@@ -48,6 +48,9 @@
     <ClCompile Include="camera.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="clipping.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="display.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="clipping.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
